@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  userId   Int    @id @default(autoincrement())
+  fullName String @db.VarChar(50)
+  email    String @unique(map: "email") @db.VarChar(50)
+  password Bytes  @db.Binary(60)
+  imageUrl String @db.VarChar(1000)
+  type     String @default("CREDENTIALS") @db.VarChar(50)
+
+  @@unique([userId, email], map: "userId")
+}
+
+model comments {
+  commentId Int    @id @default(autoincrement())
+  content   String @db.VarChar(200)
+  postId    Int
+  userId    Int
+
+  @@index([postId], map: "postId")
+  @@index([userId], map: "userId")
+}
+
+model likes {
+  like_id Int @id @default(autoincrement())
+  postId  Int
+  userId  Int
+
+  @@index([postId], map: "postId")
+  @@index([userId], map: "userId")
+}
+
+model posts {
+  postId     Int       @id @default(autoincrement())
+  userId     Int
+  postImgUrl String?   @default("") @db.VarChar(1000)
+  content    String?   @default("THIS A POST ON PIX") @db.VarChar(200)
+  timeStamps DateTime? @default(now()) @db.Timestamp(0)
+
+  @@index([userId], map: "userId")
+}
