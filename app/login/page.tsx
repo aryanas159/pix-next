@@ -49,13 +49,13 @@ export default function Login() {
 				/>
 				<Button 
 					variant="contained"
-					onClick={() => signIn("credentials", {email, password, callbackUrl: "/"})}
+					onClick={() => signIn("credentials", {email, password, callbackUrl: "/feed"})}
 				>
 					Sign in with PIX
 				</Button>
 				<Button 
 					variant="outlined"
-					onClick={() => signIn("google", {callbackUrl: "/"})}
+					onClick={() => signIn("google", {callbackUrl: "/feed"})}
 				>
 					Sign in with Google
 				</Button>

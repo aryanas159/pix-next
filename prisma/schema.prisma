@@ -46,3 +46,11 @@ model posts {
 
   @@index([userId], map: "userId")
 }
+
+model followers {
+  followerId  Int
+  followingId Int
+
+  @@id([followerId, followingId])
+  @@index([followingId], map: "followingId")
+}

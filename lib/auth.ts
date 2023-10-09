@@ -7,10 +7,10 @@ import type {
 	Profile,
 	Account,
 	DefaultSession,
+	JWT,
+	AdapterUser,
 } from "next-auth";
 import axios from "axios";
-import { JWT } from "next-auth/jwt";
-
 export const authOptions: NextAuthOptions = {
 	secret: process.env.NEXTAUTH_SECRET,
 	providers: [
@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
 			account,
 			profile,
 		}: {
-			user: UserSession;
+			user: User | AdapterUser;
 			account: Account | null;
 			profile?: any;
 		}): Promise<boolean> {
@@ -108,7 +108,7 @@ export const authOptions: NextAuthOptions = {
 			}
 			return token;
 		},
-		async session({ session, token }): Promise<Session | DefaultSession> {
+		async session({ session, token }: {session: Session, token: JWT}): Promise<Session> {
 			const { user } = token;
 			if (user) {
 				session.user = user;

@@ -6,12 +6,7 @@ type User = {
     imageUrl: string;
     [key: string]: Blob | string | undefined;
 }
-type UserSession = {
-    id: number;
-    name: string;
-    email: string;
-    image: string;
-}
+
 type Post = {
     postId: number;
     userId: number;

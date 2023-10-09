@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/lib/redux/store";
 import { useTheme } from "@emotion/react";
 import { Box } from "@mui/material";
-import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import { signIn } from "next-auth/react";
 import { Button } from "@mui/material";
@@ -12,13 +11,12 @@ import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
 export default function Home() {
 	const user = useSelector((state: RootState) => state.user.name);
+	console.log({user})
 	const theme = useTheme();
 	const { push } = useRouter();
-	console.log(user);
 	return (
-		<SessionProvider>
+		<>
 			<main>
-				<Navbar />
 				<Box className="flex flex-col items-center justify-center w-[100vw]">
 					<Image
 						src="/assets/logo_dark.png"
@@ -49,6 +47,6 @@ export default function Home() {
 					</Button>
 				</Box>
 			</main>
-		</SessionProvider>
+		</>
 	);
 }
