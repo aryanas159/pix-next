@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
 			async authorize(credentials, req): Promise<User | null> {
 				try {
 					const res = await axios.post(
-						`${process.env.AXIOS_BASE_URL}/api/user/login`,
+						`${process.env.NEXT_PUBLIC_API_URL}/user/login`,
 						{
 							email: credentials?.email,
 							password: credentials?.password,
@@ -69,7 +69,7 @@ export const authOptions: NextAuthOptions = {
 			if (account?.provider == "google") {
 				const userEmail = profile?.email;
 				const res = await axios.get(
-					`${process.env.AXIOS_BASE_URL}/api/user/${userEmail}`
+					`${process.env.NEXT_PUBLIC_API_URL}/user/${userEmail}`
 				);
 				const { user: myUser } = res.data;
 				
@@ -90,7 +90,7 @@ export const authOptions: NextAuthOptions = {
 				}
 				try {
 					const res = await axios.post(
-						`${process.env.AXIOS_BASE_URL}/api/user/signup`,
+						`${process.env.NEXT_PUBLIC_API_URL}/user/signup`,
 						formData
 					);
 					return true;

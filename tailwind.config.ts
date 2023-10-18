@@ -21,14 +21,19 @@ const config: Config = {
       'orange': '#ff7849',
       'green': '#13ce66',
       'yellow': '#ffc82c',
-      'gray-dark': '#273444',
+      'gray-dark': '#202020 ',
       'gray': '#8492a6',
-      'gray-light': '#d3dce6',
+      'gray-light': '#eeeeee',
       'black': '#000',
+      'red': "#ff0000",
+      
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
+      Poppins: ['Poppins', 'sans-serif'],
+      Roboto: ['Roboto', 'sans-serif'],
+      AROneSans: ['AR One Sans', 'sans-serif'],
     },
     extend: {
       spacing: {

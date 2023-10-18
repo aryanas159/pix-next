@@ -13,10 +13,20 @@ export async function POST(request: Request) {
 	try {
 		if (session?.user) {
 			const { id } = session.user as { id: number };
-			const { postImgUrl, content }: RequestBody = await request.json();
+			let body: RequestBody = {
+				postImgUrl: "",
+				content: ""
+			}
+			const formData = await request.formData();
+			if (formData.has("imageUrl")) {
+				body.postImgUrl = formData.get("imageUrl") as string
+			}
+			if (formData.has("content")) {
+				body.content = formData.get("content") as string
+			}
 			await prisma.$queryRaw`
                 INSERT INTO posts (userId, postImgUrl, content)
-                VALUES (${id}, ${postImgUrl}, ${content});
+                VALUES (${id}, ${body.postImgUrl}, ${body.content});
             `;
 			const post: Array<Post> = await prisma.$queryRaw`
                 SELECT * FROM posts

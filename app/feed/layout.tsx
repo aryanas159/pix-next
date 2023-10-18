@@ -13,10 +13,10 @@ function RootLayout(
     }
 ) {
 	return (
-        <>
+        <div>
             <Navbar />
             {children}
-        </>
+        </div>
     );
 }
 

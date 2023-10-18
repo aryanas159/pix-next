@@ -8,6 +8,7 @@ import MyDropzone from "@/components/MyDropzone";
 import ImageCropModal from "./ImageCropModal";
 import { type Crop } from "react-image-crop";
 import axios from "axios";
+import uploadImage from "@/lib/uploadImage";
 interface FormValues {
 	fullName: string;
 	email: string;
@@ -55,28 +56,12 @@ const SignupForm = () => {
 		}
 	}, [image]);
 	const generateOtp = async (email: string) => {
-		const res = await axios.post(`${process.env.AXIOS_BASE_URL}/api/otp/generate`, {
+		const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/otp/generate`, {
 			email,
 		});
 		const { hash } = res?.data;
 		if (hash) {
 			setOtpHash(hash);
-		}
-	};
-	const uploadImage = async (formData: FormData) => {
-		try {
-			const imageUploadRes = await fetch(
-				"https://api.cloudinary.com/v1_1/dwecdowho/image/upload",
-				{
-					method: "POST",
-					body: formData,
-				}
-			);
-			const data = await imageUploadRes.json();
-			return data;
-		} catch (error) {
-			console.log(error);
-			return error;
 		}
 	};
 	const handleSubmit = async (values: FormValues) => {
@@ -91,7 +76,7 @@ const SignupForm = () => {
 				if (!otp) {
 					setErr("Please enter the OTP");
 				}
-				const res = await axios.post(`${process.env.AXIOS_BASE_URL}/api/otp/verify`, { otp, hash: otpHash });
+				const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/otp/verify`, { otp, hash: otpHash });
 				const { success } = res.data;
 				if (success) {
 					const formData = new FormData();
@@ -114,7 +99,7 @@ const SignupForm = () => {
 					);
 					formData.append("imageUrl", secure_url);
 					formData.append("type", "CREDENTIALS");
-					const res = await axios.post(`${process.env.AXIOS_BASE_URL}/api/user/signup`, formData);
+					const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, formData);
 				} else {
 					setErr("OTP was incorrect");
 				}

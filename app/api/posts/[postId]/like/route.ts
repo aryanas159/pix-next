@@ -2,15 +2,29 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function POST(request: Request, { params: { postId } }: { params: { postId: number } }) {
+export async function POST(
+	request: Request,
+	{ params: { postId } }: { params: { postId: number } }
+) {
 	try {
 		const prisma = new PrismaClient();
 		const session = await getServerSession(authOptions);
 		if (!session?.user) {
 			return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 		}
-        console.log(session.user)
 		const { id: userId } = session.user;
+		const isLiked: Array<{ postId: Number; userId: Number }> =
+			await prisma.$queryRaw`
+					SELECT * FROM likes
+					WHERE userId = ${userId} AND postId = ${postId}
+	`;
+		if (isLiked.length > 0) {
+			await prisma.$queryRaw`
+        DELETE FROM likes
+		WHERE userId = ${userId} AND postId = ${postId}
+    `;
+			return NextResponse.json({ message: "Post unliked" }, { status: 200 });
+		}
 		await prisma.$queryRaw`
         INSERT INTO likes (userId, postId)
         VALUES (${userId}, ${postId})

@@ -12,7 +12,6 @@ import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 export default function Navbar() {
 	const { data: session, status } = useSession();
-	console.log(session, status);
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static">

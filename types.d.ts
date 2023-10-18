@@ -14,6 +14,20 @@ type Post = {
     content: string;
     timeStamps: string;
 }
+type CommentType = {
+    commentId: number;
+    postId: number;
+    userId: number;
+    content: string;
+}
+type Like = {
+    postId: number;
+    userId: number;
+}
+type FollowerType= {
+    followerId: number,
+    followingId: Number
+}
 
 // type Session = {
 //     user: UserSession

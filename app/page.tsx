@@ -40,10 +40,10 @@ export default function Home() {
 					</Button>
 					<Button
 						onClick={async () => {
-							const res = await axios.post(`/api/posts/5/comment`, {content: "Hello world"})
+							await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/follow/20`)
 						}}
 					>
-						Make request
+						click to check routes
 					</Button>
 				</Box>
 			</main>
