@@ -28,7 +28,7 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 				<Typography className="text-dark/80 text-sm font-semibold font-Poppins">
 					{fullName}
 				</Typography>
-				<Typography className="text-xs">{email}</Typography>
+				<Typography className="text-xs text-black">{email}</Typography>
 				{followers.find((user) => (user.userId === userId)) && (
 					<Typography className="text-[0.65rem] text-green font-semibold">Follows you</Typography>
 				)}

@@ -11,8 +11,10 @@ import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
+import SearchResults from "@/components/SearchResults";
 export default function Navbar() {
 	const { data: session, status } = useSession();
+	const [search, setSearch] = React.useState<string>("");
 	return (
 		<AppBar
 			position="sticky"
@@ -35,11 +37,13 @@ export default function Navbar() {
 					</Typography>
 				</Box>
 				<Box className="flex gap-4 mr-8 items-center">
-					<div className="flex items-center  gap-2 bg-white/10 rounded-full px-4 py-2 transition-all">
+					<div className="flex items-center relative gap-2 bg-white/10 rounded-full px-4 py-2 transition-all">
 						<SearchIcon />
 						<InputBase
 							size="small"
 							name="search"
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
 							placeholder="Search…"
 							className="text-white w-20 transition-all"
 							sx={{
@@ -48,6 +52,7 @@ export default function Navbar() {
 								}
 							}}
 						/>
+					{search && <SearchResults name={search} />}
 					</div>
 					{session?.user && (
 						<Avatar

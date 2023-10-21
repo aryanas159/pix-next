@@ -28,12 +28,14 @@ export default function UserInfo() {
 					className="flex flex-col items-center cursor-pointer"
 					onClick={() => setShowFollowers(true)}
 				>
-					<Typography className="text-sm text-black/80 flex items-center flex-col">
-						Followers
+					<Box className="flex flex-col items-center">
+						<Typography className="text-sm text-black/80 flex items-center flex-col">
+							Followers
+						</Typography>
 						{showFollowers && (
 							<div className="bg-light h-[2px] w-10 rounded-full mt-[2px]"></div>
 						)}
-					</Typography>
+					</Box>
 
 					<Typography className="text-xs text-black/80 mt-2">
 						{followers.length}
@@ -43,12 +45,12 @@ export default function UserInfo() {
 					className="flex flex-col items-center cursor-pointer"
 					onClick={() => setShowFollowers(false)}
 				>
-					<Typography className="text-sm text-black/80 flex items-center flex-col">
-						Following
+					<Box className="flex flex-col items-center">
+						<Typography className="text-sm text-black/80">Following</Typography>
 						{!showFollowers && (
 							<div className="bg-light h-[2px] w-10 rounded-full mt-[2px]"></div>
 						)}
-					</Typography>
+					</Box>
 
 					<Typography className="text-xs text-black/80 mt-2">
 						{following.length}

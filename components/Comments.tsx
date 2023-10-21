@@ -53,8 +53,6 @@ const Comments = ({ comments, postId, setComments }: Props) => {
 						size="small"
 						placeholder="Post a comment"
 						fullWidth
-						// onFocus={() => setIsFocused(true)}
-						// onBlur={() => setIsFocused(false)}
 						value={comment}
 						onChange={(e) => setComment(e.target.value)}
 						sx={{
@@ -67,7 +65,7 @@ const Comments = ({ comments, postId, setComments }: Props) => {
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position="end">
-									<IconButton onClick={handleComment} disabled={loading} className="mb-1">
+									<IconButton onClick={handleComment} disabled={loading || !comment} className="mb-1">
 										<SendIcon className="text-base text-light" />
 									</IconButton>
 								</InputAdornment>
