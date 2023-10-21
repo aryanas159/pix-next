@@ -20,7 +20,7 @@ const config: Config = {
       'purple': '#42113C',
       'pink': '#ff49db',
       'orange': '#ff7849',
-      'green': '#13ce66',
+      'green': '#013220',
       'yellow': '#ffc82c',
       'gray-dark': '#202020 ',
       'gray': '#8492a6',

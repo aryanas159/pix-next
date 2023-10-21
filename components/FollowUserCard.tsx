@@ -11,7 +11,7 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 	const dispatch = useDispatch();
 	const { data: session } = useSession();
 	const following = useSelector((state: RootState) => state.user.following);
-
+	const followers = useSelector((state: RootState) => state.user.followers);
 	const handleFollow = async () => {
 		try {
 			await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/follow/${userId}`);
@@ -22,13 +22,16 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 		}
 	};
 	return (
-		<Box className="flex p-2 gap-2">
+		<Box className="flex p-2 gap-2 items-center">
 			<UserAvatar userName={fullName} imageUrl={imageUrl} />
-			<Box className="flex flex-col grow pr-2">
+			<Box className="flex flex-col grow pr-2 justify-center">
 				<Typography className="text-dark/80 text-sm font-semibold font-Poppins">
 					{fullName}
 				</Typography>
 				<Typography className="text-xs">{email}</Typography>
+				{followers.find((user) => (user.userId === userId)) && (
+					<Typography className="text-[0.65rem] text-green font-semibold">Follows you</Typography>
+				)}
 			</Box>
 			{session?.user?.id !== userId &&
 				(following.find((user) => user.userId == userId) ? (
