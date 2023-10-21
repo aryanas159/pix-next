@@ -8,6 +8,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import { useSession } from "next-auth/react";
 import Comments from "@/components/Comments";
+import TimeAgo from "@/components/TimeAgo";
 import axios from "axios";
 function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 	const [user, setUser] = useState<User | null>(null);
@@ -32,18 +33,21 @@ function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 		}
 	};
 	return (
-		<Box className="flex flex-col px-4 pt-4 pb-1 rounded-2xl bg-gray-dark w-[90vw] sm:w-[35vw]">
+		<Box className="flex flex-col bg-white shadow-sm px-4 pt-4 pb-1 rounded-2xl  w-[90vw] sm:w-[35vw] backdrop-blur-lg">
 			{user && (
-				<Box className="flex items-center pb-6">
+				<Box className="flex items-center pb-4">
 					<UserAvatar userName={user?.fullName} imageUrl={user?.imageUrl} />
-					<Typography className="text-[1.1rem] ml-4">
+					<Box className="flex flex-col ml-3">
+					<Typography className="text-[1.1rem] text-dark font-semibold font-Poppins">
 						{user?.fullName}
 					</Typography>
+					<TimeAgo date={new Date(timeStamps)}/>
+					</Box>
 				</Box>
 			)}
 			<Box>
 				{content && (
-					<Typography className="text-[1rem] font-light">{content}</Typography>
+					<Typography paragraph className="px-2 text-[1rem]">{content}</Typography>
 				)}
 			</Box>
 			<Box className="w-full flex items-center justify-center">
@@ -55,17 +59,17 @@ function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 					/>
 				)}
 			</Box>
-			<Box className="flex items-center p-1">
+			<Box className="flex items-center p-2 transition-all">
 				<IconButton onClick={handleLike}>
 					{likes.find((like) => like.userId === session?.user?.id) ? (
-						<FavoriteIcon className="text-pink text-sm" />
+						<FavoriteIcon className="text-pink text-base transition-all hover:text-xl" />
 					) : (
-						<FavoriteBorderIcon className="text-pink text-sm" />
+						<FavoriteBorderIcon className="text-pink text-base transition-all hover:text-xl" />
 					)}
 				</IconButton>
 				<Typography className="text-sm">{likes.length}</Typography>
-				<IconButton onClick={() => setCommentsVisible((prev) => !prev)}>
-					<ModeCommentIcon className="text-[#0090C1] text-sm" />
+				<IconButton className="ml-2" onClick={() => setCommentsVisible((prev) => !prev)}>
+					<ModeCommentIcon className="text-[#0090C1] text-base transition-all hover:text-xl" />
 				</IconButton>
 				<Typography className="text-sm">{comments.length}</Typography>
 			</Box>

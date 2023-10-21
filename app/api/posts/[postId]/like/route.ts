@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prismaClient";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 export async function POST(
@@ -7,7 +7,6 @@ export async function POST(
 	{ params: { postId } }: { params: { postId: number } }
 ) {
 	try {
-		const prisma = new PrismaClient();
 		const session = await getServerSession(authOptions);
 		if (!session?.user) {
 			return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -28,6 +27,7 @@ export async function POST(
 		await prisma.$queryRaw`
         INSERT INTO likes (userId, postId)
         VALUES (${userId}, ${postId})
+		
     `;
 		return NextResponse.json({ message: "Post liked" }, { status: 200 });
 	} catch (error) {

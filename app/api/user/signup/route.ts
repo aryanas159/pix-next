@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prismaClient";
 import { genSaltSync, hashSync } from "bcrypt-ts";
-const prisma = new PrismaClient();
-import UserInterface from "@/app/api/user/user.interface"
+import UserInterface from "@/app/api/user/user.interface";
 let requestBody: UserInterface = {
 	fullName: "",
 	email: "",
 	password: "",
 	imageUrl: "",
-	type: "CREDENTIALS"
+	type: "CREDENTIALS",
 };
 export async function POST(request: Request) {
 	try {
@@ -33,12 +32,21 @@ export async function POST(request: Request) {
             INSERT INTO users (fullName, email, password, imageUrl, type)
             VALUES (${requestBody.fullName}, ${requestBody.email}, ${hashedPwd}, ${requestBody.imageUrl}, ${requestBody.type})
     `;
-		
-		return NextResponse.json({message: "User successfully created", success: true});
+
+		return NextResponse.json({
+			message: "User successfully created",
+			success: true,
+		});
 	} catch (err: any) {
-		if (err?.meta?.code == "1062"){
-			return NextResponse.json({message: "Provided email already exists, please login", success: false}, {status: 409})
+		if (err?.meta?.code == "1062") {
+			return NextResponse.json(
+				{
+					message: "Provided email already exists, please login",
+					success: false,
+				},
+				{ status: 409 }
+			);
 		}
-        return NextResponse.json({err, success: false}, {status: 500})
+		return NextResponse.json({ err, success: false }, { status: 500 });
 	}
 }

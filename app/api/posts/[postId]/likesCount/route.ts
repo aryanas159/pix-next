@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prismaClient";
 export async function GET(
 	request: Request,
 	{ params: { postId } }: { params: { postId: number } }
 ) {
 	try {
-		const prisma = new PrismaClient();
 		const likes = await prisma.$queryRaw`
             SELECT * FROM likes
             WHERE postId = ${postId}

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "@/lib/prismaClient";
 export async function GET(
 	request: Request,
 	{ params: { userId } }: { params: { userId: number } }
@@ -15,7 +14,7 @@ export async function GET(
 			return NextResponse.json({ user }, { status: 200 });
 		}
 		return NextResponse.json(
-			{ message: "User doesn't exist"},
+			{ message: "User doesn't exist" },
 			{ status: 404 }
 		);
 	} catch (error) {

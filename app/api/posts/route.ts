@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prismaClient";
 export async function GET() {
 	try {
-		const prisma = new PrismaClient();
 		const posts: Array<Post> = await prisma.$queryRaw`
         SELECT * FROM posts
         ORDER BY timeStamps DESC

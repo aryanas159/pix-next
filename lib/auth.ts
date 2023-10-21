@@ -67,10 +67,12 @@ export const authOptions: NextAuthOptions = {
 				return true;
 			}
 			if (account?.provider == "google") {
+				
 				const userEmail = profile?.email;
 				const res = await axios.get(
-					`${process.env.NEXT_PUBLIC_API_URL}/user/${userEmail}`
+					`${process.env.NEXT_PUBLIC_API_URL}/user/fromEmail/${userEmail}`
 				);
+				
 				const { user: myUser } = res.data;
 				
 				if (myUser) {
@@ -102,8 +104,8 @@ export const authOptions: NextAuthOptions = {
 			return false;
 		},
 		async jwt({ token, user }): Promise<JWT> {
+
 			if (user) {
-				console.log(user)
 				token.user = user;
 			}
 			return token;
@@ -115,5 +117,6 @@ export const authOptions: NextAuthOptions = {
 			}
 			return session;
 		},
+		
 	},
 };

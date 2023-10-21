@@ -6,6 +6,7 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  important: "#root",
   theme: {
     screens: {
       sm: '480px',
@@ -16,7 +17,7 @@ const config: Config = {
     colors: {
       'white': '#fff',
       'blue': '#1fb6ff',
-      'purple': '#7e5bef',
+      'purple': '#42113C',
       'pink': '#ff49db',
       'orange': '#ff7849',
       'green': '#13ce66',
@@ -26,7 +27,12 @@ const config: Config = {
       'gray-light': '#eeeeee',
       'black': '#000',
       'red': "#ff0000",
-      
+      'color-1': "#04364A",
+      'color-2': "#176B87",
+      'color-3': "#64CCC5",
+      'color-4': "#DAFFFB",
+      'light': '#2A4494',
+      'dark': '#022F40',
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],

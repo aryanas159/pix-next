@@ -2,7 +2,10 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
     palette: {
-        mode: "dark",
+        mode: "light",
+        background:{
+            default: "#fff",
+        }
     },
     typography: {
         fontFamily: ["Poppins", "sans-serif"].join(","),

@@ -9,10 +9,9 @@ import { signIn } from "next-auth/react";
 import { Button } from "@mui/material";
 import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
+
 export default function Home() {
 	const user = useSelector((state: RootState) => state.user.name);
-	console.log({user})
-	const theme = useTheme();
 	const { push } = useRouter();
 	return (
 		<>
@@ -40,7 +39,7 @@ export default function Home() {
 					</Button>
 					<Button
 						onClick={async () => {
-							await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/follow/20`)
+							await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/follow/20`);
 						}}
 					>
 						click to check routes

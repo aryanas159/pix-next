@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prismaClient"
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -9,7 +9,6 @@ export async function POST(
 ) {
 	try {
 		const session = await getServerSession(authOptions);
-		const prisma = new PrismaClient();
 		if (session?.user?.id) {
 			const res: Array<FollowerType> = await prisma.$queryRaw`
             SELECT * FROM followers

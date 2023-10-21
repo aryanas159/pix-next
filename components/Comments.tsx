@@ -43,7 +43,7 @@ const Comments = ({ comments, postId, setComments }: Props) => {
 	return (
 		<Stack spacing={2} className="py-2">
 			{session && (
-				<Box className="flex gap-4 bg-gray-dark p-2 rounded-2xl">
+				<Box className="flex gap-4 bg-white p-2 rounded-2xl">
 					<UserAvatar
 						userName={session?.user?.name}
 						imageUrl={session?.user?.image}
@@ -68,7 +68,7 @@ const Comments = ({ comments, postId, setComments }: Props) => {
 							endAdornment: (
 								<InputAdornment position="end">
 									<IconButton onClick={handleComment} disabled={loading} className="mb-1">
-										<SendIcon className="text-sm" />
+										<SendIcon className="text-base text-light" />
 									</IconButton>
 								</InputAdornment>
 							),

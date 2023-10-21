@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prismaClient";
 
 type RequestBody = {
 	postImgUrl: string;
 	content: string;
 };
 export async function POST(request: Request) {
-	const prisma = new PrismaClient();
 	const session = await getServerSession(authOptions);
 	try {
 		if (session?.user) {

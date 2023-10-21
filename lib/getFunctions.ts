@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prismaClient";
 import axios from "axios";
 
 export async function getUser(userId: Number): Promise<User | null> {
