@@ -23,7 +23,7 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 	};
 	return (
 		<Box className="flex p-2 gap-2 items-center">
-			<UserAvatar userName={fullName} imageUrl={imageUrl} />
+			<UserAvatar userId={userId as number} userName={fullName} imageUrl={imageUrl} />
 			<Box className="flex flex-col grow pr-2 justify-center">
 				<Typography className="text-dark/80 text-sm font-semibold font-Poppins">
 					{fullName}

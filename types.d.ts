@@ -1,10 +1,10 @@
 type User = {
-    userId?: string;
+    userId?: number;
     fullName: string;
     email: string;
     password: Blob | string;
     imageUrl: string;
-    [key: string]: Blob | string | undefined;
+    // [key: string]: Blob | string | undefined;
 }
 
 type Post = {

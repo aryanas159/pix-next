@@ -6,22 +6,28 @@ import UserAvatar from "@/components/UserAvatar";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/lib/redux/store";
 import FollowUserCard from "@/components/FollowUserCard";
-export default function UserInfo() {
-	const { data: session } = useSession();
-	const followers = useSelector((state: RootState) => state.user.followers);
-	const following = useSelector((state: RootState) => state.user.following);
+type Props = {
+	user: {
+		userId: number;
+		fullName: string;
+		imageUrl: string;
+		email: string;
+	};
+	followers: Array<User>;
+	following: Array<User>;
+};
+export default function UserInfo({ user, followers, following }: Props) {
 	const [showFollowers, setShowFollowers] = useState<Boolean>(false);
 	return (
 		<Box className="p-8 bg-white shadow-sm rounded-2xl flex flex-col gap-2 items-center w-1/3">
-			{session && (
-				<UserAvatar
-					userName={session.user.name}
-					imageUrl={session.user.image}
-					size={128}
-				/>
-			)}
+			<UserAvatar
+				userId={user.userId}
+				userName={user.fullName}
+				imageUrl={user.imageUrl}
+				size={128}
+			/>
 			<Typography className="text-[1.2rem] mt-4 text-dark font-semibold font-Poppins">
-				{session && session.user.name}
+				{user.fullName}
 			</Typography>
 			<Box className="flex justify-around w-full items-start">
 				<Box

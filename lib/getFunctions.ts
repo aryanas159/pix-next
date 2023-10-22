@@ -48,8 +48,19 @@ export async function getComments(postId: Number): Promise<Array<CommentType>> {
 	}
 }
 
-export async function getFollowers(): Promise<Array<User>> {
+export async function getFollowers(
+	userId?: number | null
+): Promise<Array<User>> {
 	try {
+		if (userId) {
+			const res = await axios.get(
+				`${process.env.NEXT_PUBLIC_API_URL}/follow/followers?userId=${userId}`
+			);
+			if (res?.data?.followers) {
+				return res.data.followers;
+			}
+			return [];
+		}
 		const res = await axios.get(
 			`${process.env.NEXT_PUBLIC_API_URL}/follow/followers`
 		);
@@ -62,8 +73,19 @@ export async function getFollowers(): Promise<Array<User>> {
 		return [];
 	}
 }
-export async function getFollowings(): Promise<Array<User>> {
+export async function getFollowings(
+	userId?: number | null
+): Promise<Array<User>> {
 	try {
+		if (userId) {
+			const res = await axios.get(
+				`${process.env.NEXT_PUBLIC_API_URL}/follow/followings?userId=${userId}`
+			);
+			if (res?.data?.followings) {
+				return res.data.followings;
+			}
+			return [];
+		}
 		const res = await axios.get(
 			`${process.env.NEXT_PUBLIC_API_URL}/follow/followings`
 		);
