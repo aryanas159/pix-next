@@ -89,3 +89,18 @@ export async function getAllUsers(): Promise<Array<User>> {
 		return [];
 	}
 }
+
+export async function getUserPosts(userId: number): Promise<Array<Post>> {
+	try {
+		const res = await axios.get(
+			`${process.env.NEXT_PUBLIC_API_URL}/posts?userId=${userId}`
+		);
+		if (res?.data?.posts) {
+			return res.data.posts;
+		}
+		return [];
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+}
