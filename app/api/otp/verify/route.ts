@@ -8,6 +8,6 @@ export async function POST(request: Request) {
 			{ status: 404 }
 		);
 	const isOtpCorrect = compareSync(otp, hash);
-	if (isOtpCorrect) return NextResponse.json({ success: true });
-	return NextResponse.json({ success: false });
+	if (isOtpCorrect) return NextResponse.json({ success: true }, {status: 200});
+	return NextResponse.json({ success: false }, { status: 404 });
 }

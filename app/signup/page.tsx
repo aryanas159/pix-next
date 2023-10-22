@@ -1,11 +1,9 @@
-"use client"
-import React from "react";
 import SignupForm from "@/components/SignupForm";
-import { Box, Container, Grid, Typography, Button } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { Toaster } from "react-hot-toast";
+import Link from "next/link";
 const page = () => {
-	const router = useRouter();
 	return (
 		<Container
 			maxWidth="xl"
@@ -17,11 +15,12 @@ const page = () => {
 				backgroundOrigin: "center center",
 			}}
 		>
+			<Toaster />
 			<Grid
 				container
-				className="w-[90vw] sm:w-[80vw] md:w-[70vw] bg-transparent rounded-2xl shadow-2xl flex flex-col md:flex-row p-4 "
+				className="w-[90vw] sm:w-[80vw] md:w-[70vw] bg-white/20 rounded-2xl shadow-2xl flex flex-col md:flex-row p-4 "
 				sx={{
-					backdropFilter: "blur(10px)",
+					backdropFilter: "blur(15px)",
 				}}
 			>
 				<Grid
@@ -54,23 +53,21 @@ const page = () => {
 						endless possibilities.
 					</Typography>
 					<Typography className="text-sm">
-							Already have an account ?{" "}
-							<Button size="small" onClick={() => {
-								router.push("/login")
-							}}>
-								Login
-							</Button>
-						</Typography>
+						Already have an account ?{" "}
+						<Link href="/login" className="text-light">
+							Login
+						</Link>
+					</Typography>
 				</Grid>
 				<Grid
 					item
 					xs={12}
 					sm={6}
-					className="flex items-center justify-center p-4"
+					className="flex items-center justify-cente p-4"
 				>
 					<SignupForm />
 				</Grid>
-			</Grid>	
+			</Grid>
 		</Container>
 	);
 };

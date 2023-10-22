@@ -8,7 +8,9 @@ import MyDropzone from "@/components/MyDropzone";
 import ImageCropModal from "./ImageCropModal";
 import { type Crop } from "react-image-crop";
 import axios from "axios";
+import toast from "react-hot-toast";
 import uploadImage from "@/lib/uploadImage";
+import { useRouter } from "next/navigation";
 interface FormValues {
 	fullName: string;
 	email: string;
@@ -49,7 +51,8 @@ const SignupForm = () => {
 	const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
 	const [otpHash, setOtpHash] = useState<string | null>(null);
 	const [otp, setOtp] = useState<string | null>(null);
-	const [err, setErr] = useState<string | null>(null);
+	const [loading, setLoading] = useState<boolean>(false);
+	const router = useRouter();
 	useEffect(() => {
 		if (image) {
 			setModalOpen(true);
@@ -66,17 +69,39 @@ const SignupForm = () => {
 	};
 	const handleSubmit = async (values: FormValues) => {
 		try {
+			setLoading(true)
 			if (!image) {
-				setErr("Please upload a profile picture");
+				toast.error("Please upload a profile picture")
+				setLoading(false)
+				return;
+			}
+			const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/fromEmail/${values.email}`);
+			if (res.data.user) {
+				toast.error("User with this email already exists")
+				setLoading(false)
 				return;
 			}
 			if (!otpHash) {
-				await generateOtp(values.email);
+				const otpPromise =  generateOtp(values.email);
+				toast.promise(otpPromise, {
+					loading: "Sending OTP...",
+					success: "OTP sent successfully",
+					error: "Error sending OTP",
+				});
+				await otpPromise;
+				setLoading(false)
 			} else {
 				if (!otp) {
-					setErr("Please enter the OTP");
+					toast.error("Please enter the OTP")
+					setLoading(false)
 				}
-				const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/otp/verify`, { otp, hash: otpHash });
+				const promise =  axios.post(`${process.env.NEXT_PUBLIC_API_URL}/otp/verify`, { otp, hash: otpHash });
+				toast.promise(promise, {
+					loading: "Verifying OTP...",
+					success: "OTP verified successfully",
+					error: "Error verifying OTP",
+				});
+				const res = await promise;
 				const { success } = res.data;
 				if (success) {
 					const formData = new FormData();
@@ -89,7 +114,7 @@ const SignupForm = () => {
 					}
 					const { secure_url } = await uploadImage(formData);
 					if (!secure_url) {
-						setErr("Error uploading image");
+						toast.error("Error uploading image")
 						return;
 					}
 					formData.delete("file");
@@ -99,18 +124,28 @@ const SignupForm = () => {
 					);
 					formData.append("imageUrl", secure_url);
 					formData.append("type", "CREDENTIALS");
-					const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, formData);
+					const registrationPromise =  axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, formData);
+					toast.promise(registrationPromise, {
+						loading: "Registering...",
+						success: "Registered successfully",
+						error: "Error registering",
+					});
+					await registrationPromise;
+					setLoading(false)
+					router.push("/login");
 				} else {
-					setErr("OTP was incorrect");
+					setLoading(false)
 				}
 			}
 		} catch (error: any) {
 			console.log(error)
 			if (error?.response?.data?.message) {
-				setErr(error?.response?.data?.message)
+				toast.error(error?.response?.data?.message)
+				setLoading(false)
 			}
 			else {
-				setErr("Something went wrong!")
+				toast.error("Something went wrong!")
+				setLoading(false)
 			}
 		}
 	};
@@ -176,7 +211,7 @@ const SignupForm = () => {
 		setModalOpen(false);
 	};
 	return (
-		<form onSubmit={formik.handleSubmit} className="flex flex-col gap-2 flex-1">
+		<form onSubmit={formik.handleSubmit} className="flex flex-col items-start gap-3 flex-1">
 			<FormTextField
 				id="fullName"
 				name="fullName"
@@ -249,7 +284,7 @@ const SignupForm = () => {
 			/>
 			{otpHash && (
 				<TextField
-					fullWidth
+					variant="standard"
 					name="otp"
 					placeholder="OTP sent to your email"
 					value={otp}
@@ -257,8 +292,7 @@ const SignupForm = () => {
 					type="number"
 				/>
 			)}
-			{err && <Typography color="error">{err}</Typography>}
-			<Button type="submit" variant="contained" color="primary">
+			<Button type="submit" variant="contained" disabled={loading}>
 				Submit
 			</Button>
 		</form>

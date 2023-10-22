@@ -21,11 +21,11 @@ const MyDropzone = ({ image, setImage }: MyDropzoneProps) => {
 	return (
 		<Dropzone onDrop={onDrop}>
 			{({ getRootProps, getInputProps, isDragActive, open }) => (
-				<section className="p-4 border-dashed border cursor-pointer">
+				<section className="p-4 border-dashed border cursor-pointer rounded-xl">
 					<div {...getRootProps()}>
 						<input {...getInputProps()} />
 						{isDragActive ? (
-							<Typography variant="h5">Drop the files here ...</Typography>
+							<Typography className="text-lg">Drop the files here ...</Typography>
 						) : (
 							<Box className="flex g-2 items-center">
 								{image ? (

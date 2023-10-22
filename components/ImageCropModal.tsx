@@ -10,21 +10,20 @@ interface ModalProps {
 	image: Blob | null;
 	crop: Crop;
 	setCrop: React.Dispatch<React.SetStateAction<Crop>>;
-	imageWidth: number
+	imageWidth: number;
 }
 const style = {
 	position: "absolute" as "absolute",
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	bgcolor: "background.paper",
-	border: "2px solid #000",
-	boxShadow: 24,
+	bgcolor: "transparent",
 	p: 0,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "8px"
+	display: "flex",
+	flexDirection: "column",
+	alignItems: "center",
+	justifyContent: "center",
+	gap: "8px",
 };
 const ImageCropModal = ({
 	open,
@@ -32,7 +31,7 @@ const ImageCropModal = ({
 	image,
 	crop,
 	setCrop,
-	imageWidth
+	imageWidth,
 }: ModalProps) => {
 	return (
 		<Modal
@@ -43,7 +42,12 @@ const ImageCropModal = ({
 		>
 			<Box sx={style}>
 				{image ? (
-					<ReactCrop crop={crop} onChange={(c) => setCrop(c)} minWidth={200} minHeight={200}>
+					<ReactCrop
+						crop={crop}
+						onChange={(c) => setCrop(c)}
+						minWidth={200}
+						minHeight={200}
+					>
 						<img
 							src={URL.createObjectURL(image)}
 							id="image-crop-modal"
@@ -53,9 +57,10 @@ const ImageCropModal = ({
 				) : (
 					<Typography>Upload a image first</Typography>
 				)}
-				<Button className="flex gap-1" onClick={onClose}>
-					<CropIcon />
-                    <Typography fontSize={16}>Crop</Typography>
+
+				<Button variant="contained" onClick={onClose}>
+					<CropIcon sx={{ marginRight: 1 }} />
+					<Typography fontSize={16}>Crop</Typography>
 				</Button>
 			</Box>
 		</Modal>

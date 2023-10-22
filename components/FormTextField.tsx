@@ -24,6 +24,17 @@ const FormTextField = ({id, name, label, value,type, onChange, onBlur, error, he
             onBlur={onBlur}
             error={error}
             helperText={helperText}
+            sx={{
+                '& .MuiOutlinedInput-root': {
+                    borderRadius: "5rem",
+                    '& fieldset': {
+                        
+                    },
+                },
+                '& .MuiFocused': {
+                    borderColor: "#f50057 !important"
+                }
+            }}
         />
     )
 }

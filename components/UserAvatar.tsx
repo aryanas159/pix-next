@@ -7,6 +7,7 @@ type UserAvatarProps = {
     size?: number;
 }
 import { useRouter } from "next/navigation";
+
 function UserAvatar({userId, userName, imageUrl, size}: UserAvatarProps) {
     const router = useRouter();
 	return <>
