@@ -1,66 +1,38 @@
-"use client"
-import React, {useState} from "react";
-import type { GetServerSidePropsContext } from "next";
-import { TextField, Box, Button } from "@mui/material";
-import {
-	getProviders,
-	getSession,
-	getCsrfToken,
-	signIn,
-} from "next-auth/react";
-
-type Provider = {
-	id: string,
-    name: string,
-    type: string,
-    signinUrl: string,
-    callbackUrl: string
-}
-
+"use client";
+import React, { useState } from "react";
+import { Box, Button, Container, Grid } from "@mui/material";
+import { signIn } from "next-auth/react";
+import LoginForm from "@/components/LoginForm";
+import LoginGreeting from "@/components/LoginGreeting";
+import { Toaster } from "react-hot-toast";
 export default function Login() {
-	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
 	return (
-		<>
-			<Box 
+		<Container
+			maxWidth="xl"
+			className="w-screen h-screen flex items-center justify-center transition-all"
+			sx={{
+				backgroundImage: "url('assets/bg.jpg')",
+				backgroundSize: "cover",
+				backgroundRepeat: "no-repeat",
+				backgroundOrigin: "center center",
+			}}
+		>
+			<Toaster />
+			<Grid
+				container
+				spacing={2}
+				className="bg-white/20 p-8 rounded-2xl w-[90vw] sm:w-[80vw] md:w-[70vw]"
 				sx={{
-					display: "flex",
-					flexDirection: "column",
-					gap: "1rem",
-					justifyContent: "center",
-					alignItems: "center",
-					height: "100vh",
-					width: "100vw",
+					backdropFilter: "blur(15px)",
 				}}
 			>
-				<TextField 
-					variant="outlined"
-					value={email}
-					onChange={e => setEmail(e.target.value)}
-					name="Email"
-					id="email"
-				/>
-				<TextField 
-					variant="outlined"
-					value={password}
-					onChange={e => setPassword(e.target.value)}
-					name="Password"
-					id="password"
-				/>
-				<Button 
-					variant="contained"
-					onClick={() => signIn("credentials", {email, password, callbackUrl: "/feed"})}
-				>
-					Sign in with PIX
-				</Button>
-				<Button 
-					variant="outlined"
-					onClick={() => signIn("google", {callbackUrl: "/feed"})}
-				>
-					Sign in with Google
-				</Button>
-			</Box>
-		</>
+				<Grid item xs={6} className="flex items-center">
+					<LoginGreeting />
+				</Grid>
+				<Grid item xs={6} className="flex items-center justify-center">
+					<LoginForm />
+				</Grid>
+			</Grid>
+		</Container>
 	);
 }
-
