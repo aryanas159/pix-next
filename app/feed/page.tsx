@@ -12,12 +12,13 @@ import type { RootState } from "@/lib/redux/store";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import TimeAgo from "javascript-time-ago";
-
+import { useRouter } from "next/navigation";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
 
 function Feed() {
 	const dispatch = useDispatch();
+	const router = useRouter();
 	const [posts, setPosts] = useState<Array<Post>>([]);
 	const { data: session } = useSession();
 	const followers = useSelector((state: RootState) => state.user.followers);
@@ -38,11 +39,11 @@ function Feed() {
 		console.log("exec");
 	}, []);
 	return (
-		<Container
-			maxWidth="xl"
-			className="flex px-12 gap-2 items-start pt-8 bg-[#ededed] min-h-[100vh]"
-		>
-			{session?.user && (
+		session?.user && (
+			<Container
+				maxWidth="xl"
+				className="flex px-12 gap-2 items-start pt-8 bg-[#ededed] min-h-[100vh]"
+			>
 				<UserInfo
 					user={{
 						userId: session?.user?.id,
@@ -53,13 +54,14 @@ function Feed() {
 					followers={followers}
 					following={following}
 				/>
-			)}
-			<Container className="flex flex-col gap-4 items-center">
-				<CreatePost setPosts={setPosts} />
-				<FeedPosts posts={posts} />
+
+				<Container className="flex flex-col gap-4 items-center">
+					<CreatePost setPosts={setPosts} />
+					<FeedPosts posts={posts} />
+				</Container>
+				<AllUsers />
 			</Container>
-			<AllUsers />
-		</Container>
+		)
 	);
 }
 

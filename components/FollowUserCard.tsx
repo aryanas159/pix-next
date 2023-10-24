@@ -38,7 +38,7 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 					<Button
 						variant="contained"
 						size="small"
-						className="rounded-2xl bg-white text-black text-xs py-1 hover:bg-dark hover:text-light"
+						className="rounded-2xl bg-white text-black text-xs py-1"
 						onClick={handleFollow}
 					>
 						Unfollow
@@ -47,7 +47,7 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 					<Button
 						variant="contained"
 						size="small"
-						className="rounded-2xl bg-black text-white text-xs py-1 hover:bg-light hover:text-dark"
+						className="rounded-2xl bg-black text-white text-xs py-1 "
 						onClick={handleFollow}
 					>
 						Follow

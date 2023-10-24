@@ -36,7 +36,7 @@ function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 		<Box className="flex flex-col bg-white shadow-sm px-4 pt-4 pb-1 rounded-2xl  w-[90vw] sm:w-[35vw] backdrop-blur-lg">
 			{user && (
 				<Box className="flex items-center pb-4">
-					<UserAvatar userName={user?.fullName} imageUrl={user?.imageUrl} />
+					<UserAvatar userId={user?.userId as number} userName={user?.fullName} imageUrl={user?.imageUrl} />
 					<Box className="flex flex-col ml-3">
 					<Typography className="text-[1.1rem] text-dark font-semibold font-Poppins">
 						{user?.fullName}

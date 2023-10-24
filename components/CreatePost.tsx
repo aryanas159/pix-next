@@ -72,6 +72,7 @@ function CreatePost({
 		<Box className="flex flex-col p-6 rounded-2xl w-[40vw] gap-4 bg-white shadow-sm">
 			<Box className="flex flex-row items-center justify-center gap-4">
 				<UserAvatar
+					userId={(session && session.user.id) || 0}
 					userName={(session && session.user.name) || ""}
 					imageUrl={(session && session.user.image) || ""}
 				/>
@@ -105,7 +106,7 @@ function CreatePost({
 					onClick={handlePost}
 					disabled={(!postContent && !image) || loading}
 				>
-					{loading && <CircularProgress size={18} className="mr-4" />}
+					{loading && <CircularProgress size={18} className="mr-4 text-white"/>}
 					Post
 				</Button>
 			</Box>
