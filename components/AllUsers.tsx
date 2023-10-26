@@ -13,7 +13,7 @@ function AllUsers() {
 		<Box className="flex flex-col p-4 bg-white rounded-2xl w-1/3 gap-4">
 			{users.map((user) => (
 				<FollowUserCard
-					key={user.id?.toString()}
+					key={user.userId?.toString()}
 					{...user}
 				/>
 			))}

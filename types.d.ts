@@ -2,7 +2,7 @@ type User = {
     userId?: number;
     fullName: string;
     email: string;
-    password: Blob | string;
+    password?: Blob | string;
     imageUrl: string;
     // [key: string]: Blob | string | undefined;
 }

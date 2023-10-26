@@ -1,6 +1,6 @@
 "use client";
 import { Box, Button, Typography } from "@mui/material";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "@/components/UserAvatar";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setFollowing } from "@/lib/redux/slices/user/userSlice";

@@ -2,94 +2,83 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { TextField, Button, Container, Grid, Stack, Box } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import type { RootState } from "@/lib/redux/store";
-import { getFollowings } from "@/lib/getFunctions";
-import FollowUserCard from "@/components/FollowUserCard";
 import { useSession } from "next-auth/react";
-import { setFollowing } from "@/lib/redux/slices/user/userSlice";
+import ChatUsers from "@/components/ChatUsers";
+import SelectedUserInfo from "@/components/SelectedUserInfo";
 import type { UserSession } from "@/types/next-auth";
+import { getMessages } from "@/lib/getFunctions";
+import Message from "@/components/Message";
 interface SocketSession extends UserSession {
-	socketId: string
+	socketId: string;
 }
 function Chat() {
 	const { data: session } = useSession();
 	const [socket, setSocket] = useState<any>(null);
 	const [message, setMessage] = useState("");
-	const [connectedUsers, setConnectedUsers] = useState<Array<SocketSession>>([])
-	const dispatch = useDispatch();
+	const [onlineUsers, setOnlineUsers] = useState<Array<SocketSession>>([]);
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
-	const [currentroom, setCurrentRoom] = useState<string | null>(null)
+	const [currentroom, setCurrentRoom] = useState<string | null>(null);
+	const [messages, setMessages] = useState<Array<Message>>([]);
 	useEffect(() => {
-		getFollowings(session?.user.id).then((res) =>
-			dispatch(setFollowing({ following: res }))
-		);
 		if (!socket) {
 			setSocket(io("http://localhost:4000"));
 		}
 	}, [session]);
 	useEffect(() => {
 		if (socket && session?.user) {
-				socket.emit("socket-connection", session.user)
-				socket.on("connected-users", ({connectedUsers}: {connectedUsers: Array<SocketSession>}) => {
-					setConnectedUsers(connectedUsers)
-				})
-				socket.on("message", (message: string) => {
-					console.log(message)
-				})
+			socket.emit("socket-connection", session.user);
+			socket.on(
+				"online-users",
+				({ onlineUsers }: { onlineUsers: Array<SocketSession> }) => {
+					setOnlineUsers(onlineUsers);
+				}
+			);
+			socket.on("message", (message: string) => {
+				console.log(message);
+			});
 		}
 	}, [socket, session]);
 	const handleMessage = () => {
-		console.log({message, currentroom})
+		console.log({ message, currentroom });
 		socket.emit("message", {
 			text: message,
-			room: currentroom
+			room: currentroom,
 		});
 		setMessage("");
 	};
-
-	const followings = useSelector((state: RootState) => state.user.following);
 	const handleSelectUser = (user: User) => {
 		setSelectedUser(user);
-		const myId = session?.user.id as number
-		const theirId = user.userId as number
-		const room = (myId > theirId )? `${theirId}-${myId}-room` : `${myId}-${theirId}-room`
+		const myId = session?.user.id as number;
+		const theirId = user.userId as number;
+		getMessages(myId, theirId)
+		.then((res) => setMessages(res))
+		.catch((err) => console.log(err));
+		
+		const room =
+			myId > theirId ? `${theirId}-${myId}-room` : `${myId}-${theirId}-room`;
 		socket.emit("room-join", {
-			room : room,
+			room: room,
 			user: session,
-			to: selectedUser
-		})
-		setCurrentRoom(room)
+			to: selectedUser,
+		});
+		setCurrentRoom(room);
 	};
 	return (
-		<Grid container direction="row" spacing={8}>
+		<Grid container direction="row" spacing={8} className="bg-[#eee] h-screen">
 			<Grid item xs={3}>
-				{followings.map((user) => 
-					connectedUsers.find(connectedUser => connectedUser.id === user.userId) ? (
-						<Box
-						className="cursor-pointer bg-yellow"
-						onClick={() => {
-							handleSelectUser(user);
-						}}
-					>
-						<FollowUserCard {...user} />
-					</Box>
-					) : (
-						<Box
-						className="cursor-pointer"
-						onClick={() => {
-							handleSelectUser(user);
-						}}
-					>
-						<FollowUserCard {...user} />
-					</Box>
-					)
-				)}
+				<ChatUsers
+					onlineUsers={onlineUsers}
+					handleUserClick={handleSelectUser}
+				/>
 			</Grid>
-			<Grid item xs={9}>
-				<Stack className="h-[60vh]">
-					{selectedUser && <Box>Chatting with {selectedUser.fullName}</Box>}
-				</Stack>
+			<Grid item xs={9} className="flex flex-col items-center">
+				<SelectedUserInfo selectedUser={selectedUser} />
+				<Box className="flex flex-col p-4 gap-2 bg-white rounded-2xl grow w-1/2 overflow-y-scroll">
+					{messages.map(({senderId, message}) => (
+						<Message message={message} isSender={session?.user.id === senderId}/>
+					))}
+				</Box>
+				<Box className="flex gap-2 p-4 m-4">
 				<TextField
 					label="Message"
 					value={message}
@@ -102,6 +91,7 @@ function Chat() {
 				>
 					Send
 				</Button>
+				</Box>
 			</Grid>
 		</Grid>
 	);
