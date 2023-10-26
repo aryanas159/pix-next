@@ -3,7 +3,6 @@ import ReactTimeAgo from "react-time-ago";
 
 
 export default function LastSeen({ date }: { date: Date }) {
-	console.log(date)
 	const year = date.getUTCFullYear();
 	const month = date.getUTCMonth();
 	const day = date.getUTCDate();

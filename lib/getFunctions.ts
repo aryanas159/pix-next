@@ -126,3 +126,35 @@ export async function getUserPosts(userId: number): Promise<Array<Post>> {
 		return [];
 	}
 }
+
+export async function getMessages(
+	senderId: number,
+	receiverId: number
+): Promise<Array<Message>> {
+	try {
+		const res = await axios.get(
+			`${process.env.NEXT_PUBLIC_API_URL}/chat/getMessages?senderId=${senderId}&receiverId=${receiverId}`
+		);
+		if (res?.data?.messages) {
+			return res.data.messages;
+		}
+		return [];
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+}
+export async function postMessage(
+	senderId: number,
+	receiverId: number,
+	message: string
+) {
+	try {
+		await axios.post(
+			`${process.env.NEXT_PUBLIC_API_URL}/chat/postMessage?senderId=${senderId}&receiverId=${receiverId}`,
+			{ message }
+		);
+	} catch (error) {
+		console.log(error);
+	}
+}

@@ -28,6 +28,12 @@ type FollowerType= {
     followerId: number,
     followingId: Number
 }
+type  Message = {
+    messageId: number,
+    senderId: number,
+    receiverId: number,
+    message: string
+}
 
 // type Session = {
 //     user: UserSession
