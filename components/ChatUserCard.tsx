@@ -1,7 +1,7 @@
 "use client";
 import { Box, Button, Typography } from "@mui/material";
 import UserAvatar from "@/components/UserAvatar";
-interface ChatUserCardProps extends User {
+type ChatUserCardProps =  User & {
 	isOnline: boolean;
 	handleUserClick: (user: User) => void;
 }

@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prismaClient";
 import { genSaltSync, hashSync } from "bcrypt-ts";
-import UserInterface from "@/app/api/user/user.interface";
+type UserInterface = User &{
+	type: string;
+	[key: string]: Blob | string |number| undefined;
+}
 let requestBody: UserInterface = {
 	fullName: "",
 	email: "",
@@ -14,7 +17,6 @@ export async function POST(request: Request) {
 		const formData = await request.formData();
 		const formKeys = new Array(...formData.keys());
 		for (const key in requestBody) {
-			console.log(key);
 			if (!formKeys.includes(key)) {
 				return NextResponse.json(
 					{

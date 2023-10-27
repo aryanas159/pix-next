@@ -45,6 +45,7 @@ const Comments = ({ comments, postId, setComments }: Props) => {
 			{session && (
 				<Box className="flex gap-4 bg-white p-2 rounded-2xl">
 					<UserAvatar
+						userId={session?.user?.id as number}
 						userName={session?.user?.name}
 						imageUrl={session?.user?.image}
 					/>

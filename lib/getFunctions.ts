@@ -144,11 +144,7 @@ export async function getMessages(
 		return [];
 	}
 }
-export async function postMessage(
-	senderId: number,
-	receiverId: number,
-	message: string
-) {
+export async function postMessage({ senderId, receiverId, message }: Message) {
 	try {
 		await axios.post(
 			`${process.env.NEXT_PUBLIC_API_URL}/chat/postMessage?senderId=${senderId}&receiverId=${receiverId}`,

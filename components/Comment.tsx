@@ -10,7 +10,7 @@ const Comment = ({ userId, content }: CommentType) => {
 	if (user) {
 		return (
 			<Box className="flex gap-4 bg-white p-0 rounded-2xl">
-				<UserAvatar userName={user?.fullName} imageUrl={user?.imageUrl} size={28}/>
+				<UserAvatar userId={userId} userName={user?.fullName} imageUrl={user?.imageUrl} size={28}/>
 				<Box>
 					<Typography className="text-dark font-semibold font-Poppins text-sm">{user?.fullName}</Typography>
 					<Typography className="text-[0.8rem]">{content}</Typography>

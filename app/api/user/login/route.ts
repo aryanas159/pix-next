@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prismaClient";
 import { compareSync } from "bcrypt-ts";
-import UserInterface from "@/app/api/user/user.interface";
+type UserInterface = User & {
+	type: string;
+	[key: string]: Blob | string |number| undefined;
+}
 export async function POST(request: Request) {
 	const { email, password } = await request.json();
 	if (!email || !password)
@@ -20,7 +23,7 @@ export async function POST(request: Request) {
 			{ message: "User with the provided email doesn't exist" },
 			{ status: 404 }
 		);
-	const isPasswordCorrect = compareSync(password, user.password.toString());
+	const isPasswordCorrect = compareSync(password, user.password!.toString());
 	if (!isPasswordCorrect)
 		return NextResponse.json(
 			{ message: "Password is incorrect", success: false },

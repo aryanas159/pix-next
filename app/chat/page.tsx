@@ -8,16 +8,18 @@ import SelectedUserInfo from "@/components/SelectedUserInfo";
 import type { UserSession } from "@/types/next-auth";
 import { getMessages } from "@/lib/getFunctions";
 import Message from "@/components/Message";
+import { postMessage } from "@/lib/getFunctions";
+import UserTyping from "@/components/UserTyping";
 interface SocketSession extends UserSession {
 	socketId: string;
 }
 function Chat() {
 	const { data: session } = useSession();
 	const [socket, setSocket] = useState<any>(null);
-	const [message, setMessage] = useState("");
+	const [messageText, setMessageText] = useState("");
 	const [onlineUsers, setOnlineUsers] = useState<Array<SocketSession>>([]);
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
-	const [currentroom, setCurrentRoom] = useState<string | null>(null);
+	const [currentRoom, setCurrentRoom] = useState<string | null>(null);
 	const [messages, setMessages] = useState<Array<Message>>([]);
 	useEffect(() => {
 		if (!socket) {
@@ -36,24 +38,35 @@ function Chat() {
 			socket.on("message", (message: string) => {
 				console.log(message);
 			});
+			socket.on("chat-message", (message: Message) => {
+				console.log(message);
+				setMessages((prev) => [...prev, message]);
+			});
 		}
 	}, [socket, session]);
-	const handleMessage = () => {
-		console.log({ message, currentroom });
-		socket.emit("message", {
-			text: message,
-			room: currentroom,
-		});
-		setMessage("");
+	const handleMessage = async () => {
+		const message: Message = {
+			message: messageText,
+			senderId: session?.user.id as number,
+			receiverId: selectedUser?.userId as number,
+		};
+		if (currentRoom) {
+			await postMessage(message);
+			socket.emit("chat-message", {
+				message,
+				room: currentRoom,
+			});
+		}
+		setMessageText("");
 	};
 	const handleSelectUser = (user: User) => {
 		setSelectedUser(user);
 		const myId = session?.user.id as number;
 		const theirId = user.userId as number;
 		getMessages(myId, theirId)
-		.then((res) => setMessages(res))
-		.catch((err) => console.log(err));
-		
+			.then((res) => setMessages(res))
+			.catch((err) => console.log(err));
+
 		const room =
 			myId > theirId ? `${theirId}-${myId}-room` : `${myId}-${theirId}-room`;
 		socket.emit("room-join", {
@@ -73,24 +86,30 @@ function Chat() {
 			</Grid>
 			<Grid item xs={9} className="flex flex-col items-center">
 				<SelectedUserInfo selectedUser={selectedUser} />
-				<Box className="flex flex-col p-4 gap-2 bg-white rounded-2xl grow w-1/2 overflow-y-scroll">
-					{messages.map(({senderId, message}) => (
-						<Message message={message} isSender={session?.user.id === senderId}/>
+				<Box className="flex flex-col p-4 gap-2 bg-white rounded-2xl h-[60vh] w-1/2 overflow-y-scroll">
+					<>
+					{messages.map(({ senderId, message }) => (
+						<Message
+							message={message}
+							isSender={session?.user.id === senderId}
+						/>
 					))}
+					<UserTyping />
+					</>
 				</Box>
 				<Box className="flex gap-2 p-4 m-4">
-				<TextField
-					label="Message"
-					value={message}
-					onChange={(e) => setMessage(e.target.value)}
-				/>
-				<Button
-					variant="contained"
-					className="bg-black"
-					onClick={handleMessage}
-				>
-					Send
-				</Button>
+					<TextField
+						label="Message"
+						value={messageText}
+						onChange={(e) => setMessageText(e.target.value)}
+					/>
+					<Button
+						variant="contained"
+						className="bg-black"
+						onClick={handleMessage}
+					>
+						Send
+					</Button>
 				</Box>
 			</Grid>
 		</Grid>

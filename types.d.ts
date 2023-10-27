@@ -4,7 +4,6 @@ type User = {
     email: string;
     password?: Blob | string;
     imageUrl: string;
-    // [key: string]: Blob | string | undefined;
 }
 
 type Post = {
@@ -29,7 +28,7 @@ type FollowerType= {
     followingId: Number
 }
 type  Message = {
-    messageId: number,
+    messageId?: number,
     senderId: number,
     receiverId: number,
     message: string

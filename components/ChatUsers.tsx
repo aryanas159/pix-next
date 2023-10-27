@@ -20,7 +20,7 @@ function ChatUsers({ onlineUsers, handleUserClick }: ChatUserProps) {
 		<Box className="flex flex-col bg-white p-4 rounded-2xl gap-4 m-4">
 			{users.map((user) => (
 				<ChatUserCard
-					key={user.userId?.toString()}
+					key={user.userId}
 					{...user}
 					isOnline={
 						!!onlineUsers?.find((onlineUser) => onlineUser.id === user.userId)

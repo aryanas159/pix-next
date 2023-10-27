@@ -48,9 +48,21 @@ const config: Config = {
       },
       borderRadius: {
         '4xl': '2rem',
+      },
+      keyframes: {
+        blink: {
+          '0%': {opacity: '0.1'},
+          '20%': {opacity: '1'},
+          '100%': {opacity: '0.1'}
+        }
+      },
+      animation: {
+        blink: 'blink 1.5s linear infinite'
       }
     }
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animation-delay"),
+  ],
 }
 export default config
