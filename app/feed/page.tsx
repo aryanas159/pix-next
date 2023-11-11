@@ -15,7 +15,7 @@ import TimeAgo from "javascript-time-ago";
 import { useRouter } from "next/navigation";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
-
+import ChatSection from "@/components/ChatSection";
 function Feed() {
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -40,10 +40,7 @@ function Feed() {
 	}, []);
 	return (
 		session?.user && (
-			<Container
-				maxWidth="xl"
-				className="flex px-12 gap-2 items-start pt-8 bg-[#ededed] min-h-[100vh]"
-			>
+			<Box className="flex px-8 gap-2 items-start pt-8 bg-[#ededed] min-h-screen">
 				<UserInfo
 					user={{
 						userId: session?.user?.id,
@@ -55,12 +52,12 @@ function Feed() {
 					following={following}
 				/>
 
-				<Container className="flex flex-col gap-4 items-center">
+				<Box className="flex flex-col gap-4 items-center">
 					<CreatePost setPosts={setPosts} />
 					<FeedPosts posts={posts} />
-				</Container>
-				<AllUsers />
-			</Container>
+				</Box>
+				<ChatSection />
+			</Box>
 		)
 	);
 }

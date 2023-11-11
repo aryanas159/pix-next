@@ -5,12 +5,19 @@ export async function POST(request: Request) {
 		const url = new URL(request.url);
 		const senderId = url.searchParams.get("senderId");
 		const receiverId = url.searchParams.get("receiverId");
-		const { message } = await request.json();
+		const { message, imageUrl } = await request.json();
 		if (senderId && receiverId) {
-			await prisma.$queryRaw`
-            INSERT INTO messages(senderId, receiverId, message)
-            VALUES(${senderId}, ${receiverId}, ${message})
+			if (imageUrl) {
+				await prisma.$queryRaw`
+            INSERT INTO messages(senderId, receiverId, message, imageUrl)
+            VALUES(${senderId}, ${receiverId}, ${message}, ${imageUrl})
         `;
+			} else {
+				await prisma.$queryRaw`
+			INSERT INTO messages(senderId, receiverId, message)
+			VALUES(${senderId}, ${receiverId}, ${message})
+		`;
+			}
 			return NextResponse.json(
 				{ message: "Message posted successfully" },
 				{ status: 200 }

@@ -5,7 +5,6 @@ type User = {
     password?: Blob | string;
     imageUrl: string;
 }
-
 type Post = {
     postId: number;
     userId: number;
@@ -31,7 +30,8 @@ type  Message = {
     messageId?: number,
     senderId: number,
     receiverId: number,
-    message: string
+    message: string,
+    imageUrl?: string,
 }
 
 // type Session = {

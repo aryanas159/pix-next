@@ -29,7 +29,7 @@ function ChatUsers({ onlineUsers, handleUserClick }: ChatUserProps) {
 				/>
 			))}
 		</Box>
-	);
+	);w
 }
 
 export default ChatUsers;

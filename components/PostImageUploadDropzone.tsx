@@ -10,7 +10,7 @@ function PostImageUploadDropzone({
 	image,
 	setImage,
 }: PostImageUploadDropzoneProps) {
-	const onDrop = (acceptedFiles: Array<File>) => {
+	const onDrop = (acceptedFiles: Array<File>) =>	 {
 		if (acceptedFiles.length > 0) {
             setImage(acceptedFiles[0]);
         }

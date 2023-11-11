@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import React, { useEffect, useState, useRef } from "react";
 import { TextField, Button, Container, Grid, Stack, Box } from "@mui/material";
 import { useSession } from "next-auth/react";
 import ChatUsers from "@/components/ChatUsers";
@@ -10,40 +9,84 @@ import { getMessages } from "@/lib/getFunctions";
 import Message from "@/components/Message";
 import { postMessage } from "@/lib/getFunctions";
 import UserTyping from "@/components/UserTyping";
+import { socket } from "@/lib/socket";
 interface SocketSession extends UserSession {
 	socketId: string;
 }
 function Chat() {
 	const { data: session } = useSession();
-	const [socket, setSocket] = useState<any>(null);
 	const [messageText, setMessageText] = useState("");
 	const [onlineUsers, setOnlineUsers] = useState<Array<SocketSession>>([]);
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
-	const [currentRoom, setCurrentRoom] = useState<string | null>(null);
+	const [currentRoom, setCurrentRoom] = useState<string>("");
 	const [messages, setMessages] = useState<Array<Message>>([]);
+	const [isTyping, setIsTyping] = useState(false);
+	const [isConnected, setIsConnected] = useState(false);
+	const messageRef = useRef<HTMLDivElement>(null);
 	useEffect(() => {
-		if (!socket) {
-			setSocket(io("http://localhost:4000"));
-		}
-	}, [session]);
-	useEffect(() => {
-		if (socket && session?.user) {
+		if (session?.user) {
 			socket.emit("socket-connection", session.user);
-			socket.on(
-				"online-users",
-				({ onlineUsers }: { onlineUsers: Array<SocketSession> }) => {
-					setOnlineUsers(onlineUsers);
-				}
-			);
-			socket.on("message", (message: string) => {
-				console.log(message);
-			});
-			socket.on("chat-message", (message: Message) => {
-				console.log(message);
-				setMessages((prev) => [...prev, message]);
+		}
+		const onConnect = () => {
+			console.log("connected");
+			setIsConnected(true);
+		};
+		const onDisconnect = () => {
+			console.log("disconnected");
+			setIsConnected(false);
+		};
+		const onOnlineUsers = ({
+			onlineUsers,
+		}: {
+			onlineUsers: Array<SocketSession>;
+		}) => {
+			setOnlineUsers(onlineUsers);
+		};
+		const onMessage = (message: string) => {
+			console.log(message);
+		};
+		const onChatMessage = (message: Message) => {
+			setMessages((prev) => [...prev, message]);
+		};
+		const onTyping = ({
+			room,
+			userSession,
+		}: {
+			room: string;
+			userSession: UserSession;
+		}) => {
+			setIsTyping(true);
+		};
+		socket.on("connect", onConnect);
+		socket.on("disconnect", onDisconnect);
+		socket.on("online-users", onOnlineUsers);
+		socket.on("message", onMessage);
+		socket.on("chat-message", onChatMessage);
+		socket.on("typing", onTyping);
+		return () => {
+			socket.off("connect", onConnect);
+			socket.off("disconnect", onDisconnect);
+			socket.off("online-users", onOnlineUsers);
+			socket.off("message", onMessage);
+			socket.off("chat-message", onChatMessage);
+			socket.off("typing", onTyping);
+		};
+	}, []);
+	useEffect(() => {
+		const timeOut = setTimeout(() => {
+			setIsTyping(false);
+		}, 8000);
+		return () => clearTimeout(timeOut);
+	}, [isTyping]);
+	useEffect(() => {
+		if (messageRef.current) {
+			messageRef.current.scrollIntoView({
+				behavior: "smooth",
+				block: "nearest",
+				inline: "start",
 			});
 		}
-	}, [socket, session]);
+	}, [messages, isTyping]);
 	const handleMessage = async () => {
 		const message: Message = {
 			message: messageText,
@@ -69,12 +112,12 @@ function Chat() {
 
 		const room =
 			myId > theirId ? `${theirId}-${myId}-room` : `${myId}-${theirId}-room`;
+		setCurrentRoom(room);
 		socket.emit("room-join", {
 			room: room,
 			user: session,
 			to: selectedUser,
 		});
-		setCurrentRoom(room);
 	};
 	return (
 		<Grid container direction="row" spacing={8} className="bg-[#eee] h-screen">
@@ -88,13 +131,14 @@ function Chat() {
 				<SelectedUserInfo selectedUser={selectedUser} />
 				<Box className="flex flex-col p-4 gap-2 bg-white rounded-2xl h-[60vh] w-1/2 overflow-y-scroll">
 					<>
-					{messages.map(({ senderId, message }) => (
-						<Message
-							message={message}
-							isSender={session?.user.id === senderId}
-						/>
-					))}
-					<UserTyping />
+						{messages.map(({ senderId, message }) => (
+							<Message
+								message={message}
+								isSender={session?.user.id === senderId}
+							/>
+						))}
+						{isTyping && <UserTyping />}
+						<div ref={messageRef} />
 					</>
 				</Box>
 				<Box className="flex gap-2 p-4 m-4">
@@ -102,6 +146,12 @@ function Chat() {
 						label="Message"
 						value={messageText}
 						onChange={(e) => setMessageText(e.target.value)}
+						onKeyDown={() => {
+							socket.emit("typing", {
+								room: currentRoom,
+								userSession: session?.user,
+							});
+						}}
 					/>
 					<Button
 						variant="contained"
