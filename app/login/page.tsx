@@ -21,7 +21,7 @@ export default function Login() {
 			<Grid
 				container
 				spacing={2}
-				className="bg-white/20 p-8 rounded-2xl w-[90vw] sm:w-[80vw] md:w-[70vw]"
+				className="bg-bg-light/20 p-8 rounded-2xl w-[90vw] sm:w-[80vw] md:w-[70vw]"
 				sx={{
 					backdropFilter: "blur(15px)",
 				}}

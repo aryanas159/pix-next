@@ -1,12 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import UserAvatar from "./UserAvatar";
-function SelectedUserInfo({
-	selectedUser,
-}: {
-	selectedUser: User | null;
-}) {
+function SelectedUserInfo({ selectedUser }: { selectedUser: User | null }) {
 	return (
-		<Box className="flex items-center gap-4 bg-white rounded-2xl p-4 m-4 w-1/2">
+		<Box className="flex items-center gap-4 bg-bg-light rounded-2xl p-4 m-4 w-1/2">
 			{selectedUser ? (
 				<>
 					<UserAvatar

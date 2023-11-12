@@ -23,14 +23,20 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 	};
 	return (
 		<Box className="flex p-2 gap-2 items-center">
-			<UserAvatar userId={userId as number} userName={fullName} imageUrl={imageUrl} />
+			<UserAvatar
+				userId={userId as number}
+				userName={fullName}
+				imageUrl={imageUrl}
+			/>
 			<Box className="flex flex-col grow pr-2 justify-center">
 				<Typography className="text-dark/80 text-sm font-semibold font-Poppins">
 					{fullName}
 				</Typography>
-				<Typography className="text-xs text-black">{email}</Typography>
-				{followers.find((user) => (user.userId === userId)) && (
-					<Typography className="text-[0.65rem] text-green font-semibold">Follows you</Typography>
+				<Typography className="text-xs text-primary-text">{email}</Typography>
+				{followers.find((user) => user.userId === userId) && (
+					<Typography className="text-[0.65rem] text-green font-semibold">
+						Follows you
+					</Typography>
 				)}
 			</Box>
 			{session?.user?.id !== userId &&
@@ -38,8 +44,11 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 					<Button
 						variant="contained"
 						size="small"
-						className="rounded-2xl bg-white text-black text-xs py-1"
+						className="transition-all rounded-2xl bg-bg-light text-red border border-red border-solid text-xs font-[400] py-1 hover:bg-red/10 "
 						onClick={handleFollow}
+						sx={{
+							textTransform: "none",
+						}}
 					>
 						Unfollow
 					</Button>
@@ -47,8 +56,11 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 					<Button
 						variant="contained"
 						size="small"
-						className="rounded-2xl bg-black text-white text-xs py-1 "
+						className="transition-all rounded-2xl bg-black text-primary border border-solid border-primary hover:bg-primary/10 text-xs py-1 "
 						onClick={handleFollow}
+						sx={{
+							textTransform: "none",
+						}}
 					>
 						Follow
 					</Button>

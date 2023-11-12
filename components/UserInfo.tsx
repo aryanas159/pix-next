@@ -19,7 +19,7 @@ type Props = {
 export default function UserInfo({ user, followers, following }: Props) {
 	const [showFollowers, setShowFollowers] = useState<Boolean>(false);
 	return (
-		<Box className="p-8 bg-white shadow-sm rounded-2xl flex flex-col gap-2 items-center w-1/3">
+		<Box className="p-8 bg-bg-light rounded-2xl flex flex-col gap-2 items-center w-1/3 ">
 			<UserAvatar
 				userId={user.userId}
 				userName={user.fullName}
@@ -35,15 +35,15 @@ export default function UserInfo({ user, followers, following }: Props) {
 					onClick={() => setShowFollowers(true)}
 				>
 					<Box className="flex flex-col items-center">
-						<Typography className="text-sm text-black/80 flex items-center flex-col">
+						<Typography className="text-sm text-primary-text/80 flex items-center flex-col">
 							Followers
 						</Typography>
 						{showFollowers && (
-							<div className="bg-light h-[2px] w-10 rounded-full mt-[2px]"></div>
+							<div className="bg-primary h-[2px] w-10 rounded-full mt-[2px]"></div>
 						)}
 					</Box>
 
-					<Typography className="text-xs text-black/80 mt-2">
+					<Typography className="text-xs text-primary-text/80 mt-2">
 						{followers.length}
 					</Typography>
 				</Box>
@@ -52,13 +52,15 @@ export default function UserInfo({ user, followers, following }: Props) {
 					onClick={() => setShowFollowers(false)}
 				>
 					<Box className="flex flex-col items-center">
-						<Typography className="text-sm text-black/80">Following</Typography>
+						<Typography className="text-sm text-primary-text/80">
+							Following
+						</Typography>
 						{!showFollowers && (
-							<div className="bg-light h-[2px] w-10 rounded-full mt-[2px]"></div>
+							<div className="bg-primary h-[2px] w-10 rounded-full mt-[2px]"></div>
 						)}
 					</Box>
 
-					<Typography className="text-xs text-black/80 mt-2">
+					<Typography className="text-xs text-primary-text/80 mt-2">
 						{following.length}
 					</Typography>
 				</Box>

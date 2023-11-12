@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
 import ChatSection from "@/components/ChatSection";
+import { Toaster } from "react-hot-toast";
 function Feed() {
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -40,7 +41,8 @@ function Feed() {
 	}, []);
 	return (
 		session?.user && (
-			<Box className="flex px-8 gap-2 items-start pt-8 bg-[#ededed] min-h-screen">
+			<Box className="flex px-8 gap-8 items-start pt-8 bg-bg min-h-screen">
+				<Toaster />
 				<UserInfo
 					user={{
 						userId: session?.user?.id,
@@ -52,7 +54,7 @@ function Feed() {
 					following={following}
 				/>
 
-				<Box className="flex flex-col gap-4 items-center">
+				<Box className="flex flex-col gap-4 items-center flex-1">
 					<CreatePost setPosts={setPosts} />
 					<FeedPosts posts={posts} />
 				</Box>

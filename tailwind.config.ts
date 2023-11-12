@@ -20,7 +20,7 @@ const config: Config = {
       'purple': '#42113C',
       'pink': '#ff49db',
       'orange': '#ff7849',
-      'green': '#013220',
+      'green': '#7CFC00',
       'yellow': '#ffc82c',
       'gray-dark': '#202020 ',
       'gray': '#8492a6',
@@ -32,8 +32,14 @@ const config: Config = {
       'color-3': "#64CCC5",
       'color-4': "#DAFFFB",
       'light': '#2A4494',
-      'dark': '#022F40',
+      'dark': '#fff',
+      'bg': '#000',
+      'bg-light': '#181818',
+      'primary-text': '#fff',
+      'header-text': '#fff',
+      'primary': "#72DDF7"
     },
+    //72DDF7
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
       serif: ['Merriweather', 'serif'],

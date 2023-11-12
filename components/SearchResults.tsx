@@ -16,7 +16,7 @@ export default function SearchResults({ name }: { name: string }) {
 			.catch((err) => console.log(err));
 	}, [name]);
 	return (
-		<Box className="flex flex-col gap-2 p-4 rounded-xl absolute top-14 -left-10 bg-white z-20 shadow-xl">
+		<Box className="flex flex-col gap-2 p-4 rounded-xl absolute top-14 -left-10 bg-bg-light z-20 shadow-xl">
 			{results.length ? (
 				results.map((user) => <FollowUserCard key={user.userId} {...user} />)
 			) : (

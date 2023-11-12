@@ -7,7 +7,7 @@ import { getFollowings } from "@/lib/getFunctions";
 import { UserSession } from "@/types/next-auth";
 type ChatUserProps = {
 	onlineUsers: Array<UserSession>;
-    handleUserClick: (user: User) => void;
+	handleUserClick: (user: User) => void;
 };
 function ChatUsers({ onlineUsers, handleUserClick }: ChatUserProps) {
 	const [users, setUsers] = useState<Array<User>>([]);
@@ -17,7 +17,7 @@ function ChatUsers({ onlineUsers, handleUserClick }: ChatUserProps) {
 			.catch((err) => console.log(err));
 	}, []);
 	return (
-		<Box className="flex flex-col bg-white p-4 rounded-2xl gap-4 m-4">
+		<Box className="flex flex-col bg-bg-light p-4 rounded-2xl gap-2 m-4">
 			{users.map((user) => (
 				<ChatUserCard
 					key={user.userId}
@@ -25,11 +25,11 @@ function ChatUsers({ onlineUsers, handleUserClick }: ChatUserProps) {
 					isOnline={
 						!!onlineUsers?.find((onlineUser) => onlineUser.id === user.userId)
 					}
-                    handleUserClick={handleUserClick}
+					handleUserClick={handleUserClick}
 				/>
 			))}
 		</Box>
-	);w
+	);
 }
 
 export default ChatUsers;

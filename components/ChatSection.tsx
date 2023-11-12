@@ -147,16 +147,28 @@ export default function ChatSection() {
 		setImage(e.target.files[0]);
 	};
 	return (
-		<Box className="bg-white rounded-2xl w-1/3">
+		<Box className="bg-bg-light rounded-2xl w-1/3">
 			{!currentRoom ? (
 				<Box>
+					<Box className="flex items-center gap-2 bg-gray-dark p-2 rounded-2xl">
+						<Image
+							src="assets/chat.svg"
+							alt="Chat Icon"
+							width={40}
+							height={40}
+							className="text-black"
+						/>
+						<Typography className="font-semibold text-white">
+							Chat with people you follow
+						</Typography>
+					</Box>
 					<ChatUsers
 						onlineUsers={onlineUsers}
 						handleUserClick={handleSelectUser}
 					/>
 				</Box>
 			) : (
-				<Box className="">
+				<Box className="flex flex-col h-[80vh]">
 					<Box className="flex items-center gap-2 bg-gray-dark p-2 rounded-2xl">
 						<ArrowBackIcon
 							className="text-white cursor-pointer"
@@ -171,7 +183,12 @@ export default function ChatSection() {
 							Chatting with {selectedUser?.fullName}
 						</Typography>
 					</Box>
-					<Box className="flex flex-col p-4 gap-2 bg-white rounded-2xl h-[70vh] w-full overflow-y-scroll">
+					<Box className="flex flex-1 flex-col p-4 gap-[1px] bg-bg-light w-full overflow-y-scroll">
+						{messages.length === 0 && (
+							<Typography className="text-center text-gray">
+								No messages yet
+							</Typography>
+						)}
 						<>
 							{messages.map(({ senderId, message, imageUrl }) => (
 								<Message
@@ -203,7 +220,7 @@ export default function ChatSection() {
 					<Box className="flex gap-2 items-center px-4 py-2">
 						<input
 							type="text"
-							className="px-4 py-2 rounded-full w-full border border-solid border-light"
+							className="px-4 py-2 rounded-full w-full bg-gray-dark text-white outline-none border-none"
 							value={messageText}
 							onChange={(e) => setMessageText(e.target.value)}
 							placeholder="Type a message..."
@@ -214,12 +231,12 @@ export default function ChatSection() {
 								});
 							}}
 						/>
-						<label>
+						<label className="flex items-center">
 							<input type="file" className="hidden" onChange={handleImageAdd} />
-							<ImageIcon className="text-light cursor-pointer" />
+							<ImageIcon className="text-primary cursor-pointer" />
 						</label>
 						<SendIcon
-							className="text-light cursor-pointer"
+							className="text-primary cursor-pointer"
 							onClick={handleMessageSend}
 						/>
 					</Box>

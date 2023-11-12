@@ -10,12 +10,9 @@ function AllUsers() {
 		getAllUsers().then((res) => setUsers(res));
 	}, []);
 	return (
-		<Box className="flex flex-col p-4 bg-white rounded-2xl w-1/3 gap-4">
+		<Box className="flex flex-col p-4 bg-bg-light rounded-2xl w-1/3 gap-4">
 			{users.map((user) => (
-				<FollowUserCard
-					key={user.userId}
-					{...user}
-				/>
+				<FollowUserCard key={user.userId} {...user} />
 			))}
 		</Box>
 	);

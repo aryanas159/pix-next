@@ -27,7 +27,7 @@ function PostImageUploadDropzone({
 	return (
 		<Box className="flex items-center">
 			<IconButton {...getRootProps()}>
-				<AddPhotoAlternateIcon className="text-3xl text-light" />
+				<AddPhotoAlternateIcon className="text-3xl text-primary" />
 				<input {...getInputProps()} />
 			</IconButton>
 			{isDragActive ? (

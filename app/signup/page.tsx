@@ -18,7 +18,7 @@ const page = () => {
 			<Toaster />
 			<Grid
 				container
-				className="w-[90vw] sm:w-[80vw] md:w-[70vw] bg-white/20 rounded-2xl shadow-2xl flex flex-col md:flex-row p-4 "
+				className="w-[90vw] sm:w-[80vw] md:w-[70vw] bg-bg-light/20 rounded-2xl shadow-2xl flex flex-col md:flex-row p-4 "
 				sx={{
 					backdropFilter: "blur(15px)",
 				}}
@@ -46,7 +46,7 @@ const page = () => {
 						align="center"
 						lineHeight={2}
 						paragraph
-						className="text-[0.9rem] md:text-[1rem] text-black font-medium font-Poppins"
+						className="text-[0.9rem] md:text-[1rem] text-primary-text font-medium font-Poppins"
 					>
 						The ultimate social networking platform that empowers you to connect
 						with friends, share your life's moments, and explore a world of

@@ -18,12 +18,13 @@ export default function Navbar() {
 	return (
 		<AppBar
 			position="sticky"
-			sx={{
-				backgroundColor: "#4158D0",
-				backgroundImage:
-					"linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)",
-				backdropFilter: "blur(30px) opacity(0.1)",
-			}}
+			className="bg-black"
+			// sx={{
+			// 	backgroundColor: "#4158D0",
+			// 	backgroundImage:
+			// 		"linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)",
+			// 	backdropFilter: "blur(30px) opacity(0.1)",
+			// }}
 		>
 			<Toolbar>
 				<Box className="flex gap-4 grow items-center pl-8 cursor-pointer">
@@ -37,7 +38,7 @@ export default function Navbar() {
 					</Typography>
 				</Box>
 				<Box className="flex gap-4 mr-8 items-center">
-					<div className="flex items-center relative gap-2 bg-white/10 rounded-full px-4 py-2 transition-all">
+					<div className="flex items-center relative gap-2 bg-bg-light/10 rounded-full px-4 py-2 transition-all">
 						<SearchIcon />
 						<InputBase
 							size="small"
@@ -47,12 +48,12 @@ export default function Navbar() {
 							placeholder="Search…"
 							className="text-white w-20 transition-all"
 							sx={{
-								'&.Mui-focused': {
-									width: "20ch !important" ,
-								}
+								"&.Mui-focused": {
+									width: "20ch !important",
+								},
 							}}
 						/>
-					{search && <SearchResults name={search} />}
+						{search && <SearchResults name={search} />}
 					</div>
 					{session?.user && (
 						<Avatar

@@ -129,7 +129,7 @@ function Chat() {
 			</Grid>
 			<Grid item xs={9} className="flex flex-col items-center">
 				<SelectedUserInfo selectedUser={selectedUser} />
-				<Box className="flex flex-col p-4 gap-2 bg-white rounded-2xl h-[60vh] w-1/2 overflow-y-scroll">
+				<Box className="flex flex-col p-4 gap-2 bg-bg-light rounded-2xl h-[60vh] w-1/2 overflow-y-scroll">
 					<>
 						{messages.map(({ senderId, message }) => (
 							<Message

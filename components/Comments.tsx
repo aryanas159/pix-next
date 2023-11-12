@@ -1,11 +1,5 @@
 "use client";
-import {
-	Stack,
-	Box,
-	TextField,
-	InputAdornment,
-	IconButton,
-} from "@mui/material";
+import { Stack, Box, TextField, InputAdornment } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import UserAvatar from "@/components/UserAvatar";
@@ -13,6 +7,7 @@ import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import Comment from "@/components/Comment";
 import { getComments } from "@/lib/getFunctions";
+import toast from "react-hot-toast";
 type Props = {
 	comments: Array<CommentType>;
 	postId: Number;
@@ -23,6 +18,14 @@ const Comments = ({ comments, postId, setComments }: Props) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const { data: session } = useSession();
 	const handleComment = async () => {
+		if (!comment) {
+			toast.error("Bro, you can't post an empty comment");
+			return;
+		}
+		if (loading) {
+			toast.error("Hold on bro, we're posting your comment");
+			return;
+		}
 		setLoading(true);
 		try {
 			const res = await axios.post(
@@ -41,9 +44,9 @@ const Comments = ({ comments, postId, setComments }: Props) => {
 		return;
 	};
 	return (
-		<Stack spacing={2} className="py-2">
+		<Stack spacing={2} className="p-4 bg-bg-light rounded-2xl">
 			{session && (
-				<Box className="flex gap-4 bg-white p-2 rounded-2xl">
+				<Box className="flex gap-4 bg-bg-light rounded-2xl">
 					<UserAvatar
 						userId={session?.user?.id as number}
 						userName={session?.user?.name}
@@ -66,9 +69,12 @@ const Comments = ({ comments, postId, setComments }: Props) => {
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position="end">
-									<IconButton onClick={handleComment} disabled={loading || !comment} className="mb-1">
-										<SendIcon className="text-base text-light" />
-									</IconButton>
+									<SendIcon
+										className={`cursor-pointer mb-1 text-base ${
+											loading ? "text-gray-dark" : "text-primary"
+										} `}
+										onClick={handleComment}
+									/>
 								</InputAdornment>
 							),
 						}}
