@@ -1,15 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { signIn } from "next-auth/react";
 import LoginForm from "@/components/LoginForm";
 import LoginGreeting from "@/components/LoginGreeting";
 import { Toaster } from "react-hot-toast";
 export default function Login() {
 	return (
-		<Container
-			className="w-screen h-screen flex items-center justify-center transition-all overflow-hidden p-0 m-0"
-			sx={{
+		<main
+			className="w-screen h-screen flex items-center justify-center transition-all overflow-auto"
+			style={{
 				backgroundImage: "url('assets/bg.jpg')",
 				backgroundSize: "cover",
 				backgroundRepeat: "no-repeat",
@@ -32,6 +32,6 @@ export default function Login() {
 					<LoginForm />
 				</Grid>
 			</Grid>
-		</Container>
+		</main>
 	);
 }

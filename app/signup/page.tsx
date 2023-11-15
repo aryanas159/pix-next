@@ -5,30 +5,24 @@ import { Toaster } from "react-hot-toast";
 import Link from "next/link";
 const page = () => {
 	return (
-		<Box
-			className="w-screen h-screen flex items-center justify-center transition-all"
-			sx={{
+		<main
+			className="py-4 w-screen min-h-screen flex sm:items-center justify-center transition-all overflow-auto"
+			style={{
 				backgroundImage: "url('assets/bg.jpg')",
 				backgroundSize: "cover",
 				backgroundRepeat: "no-repeat",
 				backgroundOrigin: "center center",
-				backgroundAttachment: "fixed",
+				// backgroundAttachment: "fixed",
 			}}
 		>
 			<Toaster />
-			<Grid
-				container
-				className="xs:w-[90vw] sm:w-[80vw] bg-white/10 rounded-2xl shadow-2xl flex xs:flex-col sm:flex-row xs:p-2 sm:p-4"
-				sx={{
+			<div
+				className="xs:w-[100vw] sm:w-[70vw] mx-2 bg-white/10 rounded-2xl shadow-2xl flex xs:flex-col sm:flex-row xs:p-2 sm:p-4"
+				style={{
 					backdropFilter: "blur(15px)",
 				}}
 			>
-				<Grid
-					item
-					xs={12}
-					sm={6}
-					className="flex flex-col items-center gap-4 p-4 justify-center"
-				>
+				<div className="flex flex-col flex-1 items-center gap-4 sm:p-4 justify-center">
 					<Image
 						src="/assets/logo_light.png"
 						alt="PIX"
@@ -46,7 +40,7 @@ const page = () => {
 						align="center"
 						lineHeight={2}
 						paragraph
-						className="xs:text-[0.8rem] sm:text-[0.9rem] md:text-[1rem] text-black font-medium font-Poppins xs:hidden sm:block"
+						className="xs:text-[0.8rem] sm:text-[0.9rem] md:text-[1rem] text-black font-medium font-Poppins"
 					>
 						The ultimate social networking platform that empowers you to connect
 						with friends, share your life's moments, and explore a world of
@@ -58,17 +52,15 @@ const page = () => {
 							Login
 						</Link>
 					</Typography>
-				</Grid>
-				<Grid
-					item
-					xs={12}
-					sm={6}
-					className="flex items-center justify-center p-4"
+				</div>
+				<div
+					className="flex items-center flex-1
+				w-full justify-center p-4"
 				>
 					<SignupForm />
-				</Grid>
-			</Grid>
-		</Box>
+				</div>
+			</div>
+		</main>
 	);
 };
 

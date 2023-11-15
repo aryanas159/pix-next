@@ -11,6 +11,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import uploadImage from "@/lib/uploadImage";
 import { useRouter } from "next/navigation";
+import { useMediaQuery } from "@mui/material";
 interface FormValues {
 	fullName: string;
 	email: string;
@@ -53,15 +54,19 @@ const SignupForm = () => {
 	const [otp, setOtp] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const router = useRouter();
+	const isMobile = useMediaQuery("(max-width: 800px)");
 	useEffect(() => {
-		if (image) {
+		if (image && !isMobile) {
 			setModalOpen(true);
 		}
 	}, [image]);
 	const generateOtp = async (email: string) => {
-		const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/otp/generate`, {
-			email,
-		});
+		const res = await axios.post(
+			`${process.env.NEXT_PUBLIC_API_URL}/otp/generate`,
+			{
+				email,
+			}
+		);
 		const { hash } = res?.data;
 		if (hash) {
 			setOtpHash(hash);
@@ -69,33 +74,38 @@ const SignupForm = () => {
 	};
 	const handleSubmit = async (values: FormValues) => {
 		try {
-			setLoading(true)
+			setLoading(true);
 			if (!image) {
-				toast.error("Please upload a profile picture")
-				setLoading(false)
+				toast.error("Please upload a profile picture");
+				setLoading(false);
 				return;
 			}
-			const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/fromEmail/${values.email}`);
+			const res = await axios.get(
+				`${process.env.NEXT_PUBLIC_API_URL}/user/fromEmail/${values.email}`
+			);
 			if (res.data.user) {
-				toast.error("User with this email already exists")
-				setLoading(false)
+				toast.error("User with this email already exists");
+				setLoading(false);
 				return;
 			}
 			if (!otpHash) {
-				const otpPromise =  generateOtp(values.email);
+				const otpPromise = generateOtp(values.email);
 				toast.promise(otpPromise, {
 					loading: "Sending OTP...",
 					success: "OTP sent successfully",
 					error: "Error sending OTP",
 				});
 				await otpPromise;
-				setLoading(false)
+				setLoading(false);
 			} else {
 				if (!otp) {
-					toast.error("Please enter the OTP")
-					setLoading(false)
+					toast.error("Please enter the OTP");
+					setLoading(false);
 				}
-				const promise =  axios.post(`${process.env.NEXT_PUBLIC_API_URL}/otp/verify`, { otp, hash: otpHash });
+				const promise = axios.post(
+					`${process.env.NEXT_PUBLIC_API_URL}/otp/verify`,
+					{ otp, hash: otpHash }
+				);
 				toast.promise(promise, {
 					loading: "Verifying OTP...",
 					success: "OTP verified successfully",
@@ -114,7 +124,7 @@ const SignupForm = () => {
 					}
 					const { secure_url } = await uploadImage(formData);
 					if (!secure_url) {
-						toast.error("Error uploading image")
+						toast.error("Error uploading image");
 						return;
 					}
 					formData.delete("file");
@@ -124,28 +134,30 @@ const SignupForm = () => {
 					);
 					formData.append("imageUrl", secure_url);
 					formData.append("type", "CREDENTIALS");
-					const registrationPromise =  axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, formData);
+					const registrationPromise = axios.post(
+						`${process.env.NEXT_PUBLIC_API_URL}/user/signup`,
+						formData
+					);
 					toast.promise(registrationPromise, {
 						loading: "Registering...",
 						success: "Registered successfully",
 						error: "Error registering",
 					});
 					await registrationPromise;
-					setLoading(false)
+					setLoading(false);
 					router.push("/login");
 				} else {
-					setLoading(false)
+					setLoading(false);
 				}
 			}
 		} catch (error: any) {
-			console.log(error)
+			console.log(error);
 			if (error?.response?.data?.message) {
-				toast.error(error?.response?.data?.message)
-				setLoading(false)
-			}
-			else {
-				toast.error("Something went wrong!")
-				setLoading(false)
+				toast.error(error?.response?.data?.message);
+				setLoading(false);
+			} else {
+				toast.error("Something went wrong!");
+				setLoading(false);
 			}
 		}
 	};
@@ -211,7 +223,10 @@ const SignupForm = () => {
 		setModalOpen(false);
 	};
 	return (
-		<form onSubmit={formik.handleSubmit} className="flex flex-col items-start gap-3 flex-1">
+		<form
+			onSubmit={formik.handleSubmit}
+			className="flex flex-col items-start gap-3 flex-1"
+		>
 			<FormTextField
 				id="fullName"
 				name="fullName"

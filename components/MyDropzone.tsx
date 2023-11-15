@@ -12,7 +12,6 @@ const MyDropzone = ({ image, setImage }: MyDropzoneProps) => {
 	const onDrop = (acceptedFiles: File[]) => {
 		if (acceptedFiles.length > 0) {
 			setImage(acceptedFiles[0]);
-			console.log(image);
 		}
 	};
 	return (
@@ -30,7 +29,7 @@ const MyDropzone = ({ image, setImage }: MyDropzoneProps) => {
 								: (
 									<>
 										<AddIcon />
-										<Typography>Upload a profile picture</Typography>
+										<Typography className="xs:text-sm sm:text-base">Upload a profile picture</Typography>
 									</>
 								)}
 							</Box>

@@ -10,7 +10,7 @@ function Message({ message, isSender, imageUrl }: MessageProps) {
 			{imageUrl ? (
 				<div className={` flex flex-col items-${isSender ? "end" : "start"}`}>
 					<div
-						className={`flex p-1 items-center bg-primary rounded-s-2xl ${
+						className={`flex p-1 items-center ${isSender ? "bg-primary rounded-s-2xl" : "bg-black rounded-e-2xl"}  ${
 							isSender ? "rounded-tr-2xl" : "rounded-tl-2xl"
 						}`}
 					>
