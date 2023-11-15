@@ -8,8 +8,7 @@ import { Toaster } from "react-hot-toast";
 export default function Login() {
 	return (
 		<Container
-			maxWidth="xl"
-			className="w-screen h-screen flex items-center justify-center transition-all"
+			className="w-screen h-screen flex items-center justify-center transition-all overflow-hidden p-0 m-0"
 			sx={{
 				backgroundImage: "url('assets/bg.jpg')",
 				backgroundSize: "cover",
@@ -21,15 +20,15 @@ export default function Login() {
 			<Grid
 				container
 				spacing={2}
-				className="bg-bg-light/20 p-8 rounded-2xl w-[90vw] sm:w-[80vw] md:w-[70vw]"
+				className="bg-white/10 ml-1 xs:p-4 sm:p-8 rounded-2xl w-[90vw] sm:w-[80vw] md:w-[70vw] flex xs:flex-col sm:flex-row"
 				sx={{
 					backdropFilter: "blur(15px)",
 				}}
 			>
-				<Grid item xs={6} className="flex items-center">
+				<Grid item xs={12} sm={6} className="flex items-center">
 					<LoginGreeting />
 				</Grid>
-				<Grid item xs={6} className="flex items-center justify-center">
+				<Grid item xs={12} sm={6} className="flex items-center justify-center">
 					<LoginForm />
 				</Grid>
 			</Grid>

@@ -15,22 +15,19 @@ const MyDropzone = ({ image, setImage }: MyDropzoneProps) => {
 			console.log(image);
 		}
 	};
-	const getImageUrl = (image: Blob) => {
-		return URL.createObjectURL(image);
-	};
 	return (
 		<Dropzone onDrop={onDrop}>
 			{({ getRootProps, getInputProps, isDragActive, open }) => (
-				<section className="p-4 border-dashed border cursor-pointer rounded-xl">
+				<section className="xs:p-2 sm:p-4 border-dashed border cursor-pointer rounded-xl border-black text-black">
 					<div {...getRootProps()}>
 						<input {...getInputProps()} />
 						{isDragActive ? (
 							<Typography className="text-lg">Drop the files here ...</Typography>
 						) : (
-							<Box className="flex g-2 items-center">
-								{image ? (
-									image.name
-								) : (
+							<Box className="flex g-2 items-center max-w-full text-ellipsis">
+								{image ? 
+									image.name.length > 20 ? image.name.substring(0, 20) + "..." : image.name
+								: (
 									<>
 										<AddIcon />
 										<Typography>Upload a profile picture</Typography>

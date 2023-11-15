@@ -19,7 +19,7 @@ type Props = {
 export default function UserInfo({ user, followers, following }: Props) {
 	const [showFollowers, setShowFollowers] = useState<Boolean>(false);
 	return (
-		<Box className="p-8 bg-bg-light rounded-2xl flex flex-col gap-2 items-center w-1/3 ">
+		<Box className=" max-h-screen w-full xs:p-4 sm:p-8 bg-bg-light rounded-2xl flex flex-col gap-2 items-center flex-1">
 			<UserAvatar
 				userId={user.userId}
 				userName={user.fullName}
@@ -65,7 +65,7 @@ export default function UserInfo({ user, followers, following }: Props) {
 					</Typography>
 				</Box>
 			</Box>
-			<Box className="flex flex-col gap-2 pt-4">
+			<Box className="flex flex-col gap-2 pt-4 overflow-y-auto">
 				{showFollowers
 					? !!followers?.length &&
 					  followers.map((follower) => (

@@ -32,13 +32,13 @@ const validationSchema = yup.object({
 export default function LoginForm() {
 	const [loading, setLoading] = useState<boolean>(false);
 	const router = useRouter();
-    useEffect(() => {
-        router.prefetch("/feed");
-    }, [router])
+	useEffect(() => {
+		router.prefetch("/feed");
+	}, [router]);
 	const handleSubmit = async (values: FormValues) => {
 		try {
 			setLoading(true);
-            toast.loading("Logging in...");
+			toast.loading("Logging in...");
 			const signInResponse = await signIn("credentials", {
 				email: values.email,
 				password: values.password,
@@ -46,13 +46,13 @@ export default function LoginForm() {
 				callbackUrl: "/feed",
 			});
 			if (!signInResponse?.ok) {
-                toast.dismiss();
+				toast.dismiss();
 				toast.error("Please check your credentials");
 				console.log(signInResponse?.error);
 				setLoading(false);
 				return;
 			}
-            toast.dismiss();
+			toast.dismiss();
 			toast.success("Logged in successfully");
 			setLoading(false);
 			router.push("/feed");
@@ -69,7 +69,7 @@ export default function LoginForm() {
 	return (
 		<form
 			onSubmit={formik.handleSubmit}
-			className="flex flex-col items-start gap-4 w-[70%]"
+			className="flex flex-col items-start gap-4 w-full sm:w-[70%]"
 		>
 			<FormTextField
 				id="email"
@@ -98,18 +98,22 @@ export default function LoginForm() {
 				}
 				helperText={formik.touched.password && formik.errors.password}
 			/>
-			<Button type="submit" variant="contained" disabled={loading} className="w-full rounded-xl">
+			<Button
+				type="submit"
+				variant="contained"
+				disabled={loading}
+				className="w-full rounded-xl hover:bg-primary"
+			>
 				Sign In with PIX
 			</Button>
-            <div className="flex w-full items-center gap-1">
-                <div className="bg-black h-[1px] w-full"></div>
-                <Typography className="text-xs font-Roboto font-medium">
-                    OR
-                </Typography>
-                <div className="bg-black h-[1px] w-full"></div>
-                
-            </div>
-            <GoogleSignInButton />
+			<div className="flex w-full items-center gap-1">
+				<div className="bg-black h-[1px] w-full"></div>
+				<Typography className="text-xs font-Roboto font-medium text-black">
+					OR
+				</Typography>
+				<div className="bg-black h-[1px] w-full"></div>
+			</div>
+			<GoogleSignInButton />
 		</form>
 	);
 }

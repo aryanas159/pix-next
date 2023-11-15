@@ -68,7 +68,7 @@ function CreatePost({
 		}
 	};
 	return (
-		<Box className="flex flex-col p-6 rounded-2xl w-[40vw] gap-4 bg-bg-light shadow-sm">
+		<Box className="flex flex-col xs:p-3 sm:p-6 w-full rounded-2xl gap-4 bg-bg-light shadow-sm">
 			<Box className="flex flex-row items-center justify-center gap-4">
 				<UserAvatar
 					userId={(session && session.user.id) || 0}

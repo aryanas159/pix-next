@@ -1,6 +1,14 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { TextField, Button, Container, Grid, Stack, Box } from "@mui/material";
+import {
+	TextField,
+	Button,
+	Container,
+	Grid,
+	Stack,
+	Box,
+	Typography,
+} from "@mui/material";
 import { useSession } from "next-auth/react";
 import ChatUsers from "@/components/ChatUsers";
 import SelectedUserInfo from "@/components/SelectedUserInfo";
@@ -10,6 +18,14 @@ import Message from "@/components/Message";
 import { postMessage } from "@/lib/getFunctions";
 import UserTyping from "@/components/UserTyping";
 import { socket } from "@/lib/socket";
+import ImageIcon from "@mui/icons-material/Image";
+import SendIcon from "@mui/icons-material/Send";
+import { ChangeEvent } from "react";
+import uploadImage from "@/lib/uploadImage";
+import Image from "next/image";
+import CircularProgress from "@mui/material/CircularProgress";
+import ChatSection from "@/components/ChatSection";
+import { useMediaQuery } from "@mui/material";
 interface SocketSession extends UserSession {
 	socketId: string;
 }
@@ -23,6 +39,9 @@ function Chat() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [isConnected, setIsConnected] = useState(false);
 	const messageRef = useRef<HTMLDivElement>(null);
+	const [image, setImage] = useState<Blob | null>(null);
+	const [isLoading, setIsLoading] = useState<Boolean>(false);
+	const isMobile = useMediaQuery("(max-width:800px)");
 	useEffect(() => {
 		if (session?.user) {
 			socket.emit("socket-connection", session.user);
@@ -88,19 +107,38 @@ function Chat() {
 		}
 	}, [messages, isTyping]);
 	const handleMessage = async () => {
-		const message: Message = {
-			message: messageText,
-			senderId: session?.user.id as number,
-			receiverId: selectedUser?.userId as number,
-		};
-		if (currentRoom) {
+		if (image) {
+			const formData = new FormData();
+			formData.append("upload_preset", "my_unsigned_preset");
+			formData.append("file", image);
+			const { secure_url } = await uploadImage(formData);
+			const message: Message = {
+				message: messageText,
+				senderId: session?.user.id as number,
+				receiverId: selectedUser?.userId as number,
+				imageUrl: secure_url,
+			};
+			socket.emit("chat-message", { message, room: currentRoom });
 			await postMessage(message);
-			socket.emit("chat-message", {
-				message,
-				room: currentRoom,
-			});
+			setMessageText("");
+			setImage(null);
+			return;
 		}
-		setMessageText("");
+		if (messageText) {
+			const message: Message = {
+				message: messageText,
+				senderId: session?.user.id as number,
+				receiverId: selectedUser?.userId as number,
+			};
+			socket.emit("chat-message", { message, room: currentRoom });
+			postMessage(message);
+			setMessageText("");
+		}
+	};
+	const handleImageAdd = (e: ChangeEvent<HTMLInputElement>) => {
+		if (!e.target.files?.length) return;
+		if (e.target.files[0].type.split("/")[0] !== "image") return;
+		setImage(e.target.files[0]);
 	};
 	const handleSelectUser = (user: User) => {
 		setSelectedUser(user);
@@ -119,48 +157,102 @@ function Chat() {
 			to: selectedUser,
 		});
 	};
-	return (
-		<Grid container direction="row" spacing={8} className="bg-[#eee] h-screen">
-			<Grid item xs={3}>
+	return isMobile ? (
+			<ChatSection />
+		
+	) : (
+		<Grid
+			container
+			direction="row"
+			spacing={8}
+			className="bg-bg h-screen px-64"
+		>
+			<Grid item xs={4}>
 				<ChatUsers
 					onlineUsers={onlineUsers}
 					handleUserClick={handleSelectUser}
 				/>
 			</Grid>
-			<Grid item xs={9} className="flex flex-col items-center">
+			<Grid item xs={8} className="flex flex-col h-[100vh] pb-2">
 				<SelectedUserInfo selectedUser={selectedUser} />
-				<Box className="flex flex-col p-4 gap-2 bg-bg-light rounded-2xl h-[60vh] w-1/2 overflow-y-scroll">
-					<>
-						{messages.map(({ senderId, message }) => (
-							<Message
-								message={message}
-								isSender={session?.user.id === senderId}
+				<Box className="flex flex-col p-4 gap-2 bg-bg-light rounded-2xl flex-1 overflow-y-scroll">
+					{selectedUser ? (
+						<>
+							{messages.map(({ senderId, message, imageUrl }) => (
+								<Message
+									message={message}
+									isSender={session?.user.id === senderId}
+									imageUrl={imageUrl}
+								/>
+							))}
+							{isTyping && <UserTyping />}
+							<div ref={messageRef} />
+						</>
+					) : (
+						<div className="flex flex-col items-center justify-center h-full">
+							<Image
+								src="assets/chat.svg"
+								alt="Chat Icon"
+								width={100}
+								height={100}
+								className="w-[150px] h-[150px]"
 							/>
-						))}
-						{isTyping && <UserTyping />}
-						<div ref={messageRef} />
-					</>
+							<Typography className="text-[2rem] text-primary mb-2">
+								Welcome to PIX Chat
+							</Typography>
+							<Typography className="font-light ">
+								Talk and share photos among the people you follow
+							</Typography>
+						</div>
+					)}
 				</Box>
-				<Box className="flex gap-2 p-4 m-4">
-					<TextField
-						label="Message"
-						value={messageText}
-						onChange={(e) => setMessageText(e.target.value)}
-						onKeyDown={() => {
-							socket.emit("typing", {
-								room: currentRoom,
-								userSession: session?.user,
-							});
-						}}
-					/>
-					<Button
-						variant="contained"
-						className="bg-black"
-						onClick={handleMessage}
-					>
-						Send
-					</Button>
-				</Box>
+				{image && (
+					<div className="p-2 relative w-[200px]">
+						<div
+							className="flex justify-center absolute top-2 -right-2 text-white bg-gray-dark w-[25px] h-[25px] rounded-full cursor-pointer"
+							onClick={() => setImage(null)}
+						>
+							x
+						</div>
+						<img
+							src={URL.createObjectURL(image)}
+							width={200}
+							alt="Preview"
+							className="rounded-2xl"
+						/>
+					</div>
+				)}
+				{selectedUser && (
+					<Box className="flex gap-2 items-center px-4 pt-2">
+						<input
+							type="text"
+							className="px-4 py-2 rounded-full w-full bg-gray-dark text-white outline-none border-none"
+							value={messageText}
+							onChange={(e) => setMessageText(e.target.value)}
+							placeholder="Type a message..."
+							onKeyDown={() => {
+								socket.emit("typing", {
+									room: currentRoom,
+									userSession: session?.user,
+								});
+							}}
+						/>
+						<label className="flex items-center">
+							<input type="file" className="hidden" onChange={handleImageAdd} />
+							<ImageIcon className="text-primary cursor-pointer" />
+						</label>
+						{isLoading ? (
+							<Box sx={{ display: "flex" }}>
+								<CircularProgress size={20} />
+							</Box>
+						) : (
+							<SendIcon
+								className="text-primary cursor-pointer"
+								onClick={handleMessage}
+							/>
+						)}
+					</Box>
+				)}
 			</Grid>
 		</Grid>
 	);

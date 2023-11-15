@@ -12,6 +12,7 @@ import UserAvatar from "@/components/UserAvatar";
 import SendIcon from "@mui/icons-material/Send";
 import ImageIcon from "@mui/icons-material/Image";
 import uploadImage from "@/lib/uploadImage";
+import CircularProgress from "@mui/material/CircularProgress";
 interface SocketSession extends UserSession {
 	socketId: string;
 }
@@ -29,6 +30,7 @@ export default function ChatSection() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [isConnected, setIsConnected] = useState(false);
 	const messageRef = useRef<HTMLDivElement>(null);
+	const [isLoading, setIsLoading] = useState<Boolean>(false);
 	const [image, setImage] = useState<Blob | null>(null);
 	useEffect(() => {
 		if (session?.user) {
@@ -115,30 +117,40 @@ export default function ChatSection() {
 		setMessages([]);
 	};
 	const handleMessageSend = async () => {
-		if (image && messageText) {
-			const formData = new FormData();
-			formData.append("upload_preset", "my_unsigned_preset");
-			formData.append("file", image);
-			const { secure_url } = await uploadImage(formData);
-			const message: Message = {
-				message: messageText,
-				senderId: session?.user.id as number,
-				receiverId: selectedUser?.userId as number,
-				imageUrl: secure_url,
-			};
-			socket.emit("chat-message", { message, room: currentRoom });
-			postMessage(message);
-			setMessageText("");
-		}
-		if (messageText) {
-			const message: Message = {
-				message: messageText,
-				senderId: session?.user.id as number,
-				receiverId: selectedUser?.userId as number,
-			};
-			socket.emit("chat-message", { message, room: currentRoom });
-			postMessage(message);
-			setMessageText("");
+		try {
+			setIsLoading(true);
+			if (image) {
+				const formData = new FormData();
+				formData.append("upload_preset", "my_unsigned_preset");
+				formData.append("file", image);
+				const { secure_url } = await uploadImage(formData);
+				const message: Message = {
+					message: messageText,
+					senderId: session?.user.id as number,
+					receiverId: selectedUser?.userId as number,
+					imageUrl: secure_url,
+				};
+				socket.emit("chat-message", { message, room: currentRoom });
+				await postMessage(message);
+				setMessageText("");
+				setImage(null);
+				setIsLoading(false);
+				return;
+			}
+			if (messageText) {
+				const message: Message = {
+					message: messageText,
+					senderId: session?.user.id as number,
+					receiverId: selectedUser?.userId as number,
+				};
+				socket.emit("chat-message", { message, room: currentRoom });
+				postMessage(message);
+				setIsLoading(false);
+				setMessageText("");
+			}
+		} catch (error) {
+			console.log(error);
+			setIsLoading(false);
 		}
 	};
 	const handleImageAdd = (e: ChangeEvent<HTMLInputElement>) => {
@@ -147,10 +159,10 @@ export default function ChatSection() {
 		setImage(e.target.files[0]);
 	};
 	return (
-		<Box className="bg-bg-light rounded-2xl w-1/3">
+		<Box className="bg-bg-light sm:rounded-2xl flex-[1.5] xs:h-[calc(100vh-64px)] sm:h-auto overflow-auto">
 			{!currentRoom ? (
 				<Box>
-					<Box className="flex items-center gap-2 bg-gray-dark p-2 rounded-2xl">
+					<Box className="flex items-center gap-2 bg-gray-dark p-2 sm:rounded-2xl">
 						<Image
 							src="assets/chat.svg"
 							alt="Chat Icon"
@@ -168,8 +180,8 @@ export default function ChatSection() {
 					/>
 				</Box>
 			) : (
-				<Box className="flex flex-col h-[80vh]">
-					<Box className="flex items-center gap-2 bg-gray-dark p-2 rounded-2xl">
+				<Box className="flex flex-col h-[calc(100vh-64px)] sm:h-[80vh]">
+					<Box className="flex items-center gap-2 bg-gray-dark p-2 sm:rounded-2xl">
 						<ArrowBackIcon
 							className="text-white cursor-pointer"
 							onClick={handleBackClick}
@@ -235,10 +247,17 @@ export default function ChatSection() {
 							<input type="file" className="hidden" onChange={handleImageAdd} />
 							<ImageIcon className="text-primary cursor-pointer" />
 						</label>
-						<SendIcon
-							className="text-primary cursor-pointer"
-							onClick={handleMessageSend}
-						/>
+						{isLoading ? (
+							<Box sx={{ display: "flex" }}>
+								<CircularProgress size={20} />
+							</Box>
+						) : (
+							<SendIcon
+								
+								className="text-primary cursor-pointer"
+								onClick={handleMessageSend}
+							/>
+						)}
 					</Box>
 				</Box>
 			)}

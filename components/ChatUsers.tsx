@@ -17,7 +17,7 @@ function ChatUsers({ onlineUsers, handleUserClick }: ChatUserProps) {
 			.catch((err) => console.log(err));
 	}, []);
 	return (
-		<Box className="flex flex-col bg-bg-light p-4 rounded-2xl gap-2 m-4">
+		<Box className="flex flex-col bg-bg-light p-4 rounded-2xl gap-2 m-4 overflow-y-auto max-h-100vh">
 			{users.map((user) => (
 				<ChatUserCard
 					key={user.userId}

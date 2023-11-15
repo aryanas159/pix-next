@@ -34,7 +34,7 @@ function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 	};
 	return (
 		<Box>
-			<Box className="flex flex-col bg-bg-light p-4 rounded-2xl">
+			<Box className="flex flex-col bg-bg-light xs:p-2 sm:p-4 rounded-2xl">
 				{user && (
 					<Box className="flex items-center pb-4">
 						<UserAvatar
@@ -43,7 +43,7 @@ function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 							imageUrl={user?.imageUrl}
 						/>
 						<Box className="flex flex-col ml-3">
-							<Typography className="text-[1.1rem] text-dark font-semibold font-Poppins">
+							<Typography className="text-[1.1rem] text-dark sm:font-semibold font-Poppins">
 								{user?.fullName}
 							</Typography>
 							<TimeAgo date={new Date(timeStamps)} />
@@ -54,7 +54,7 @@ function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 					{content && (
 						<Typography
 							paragraph
-							className="px-2 text-[1rem] whitespace-pre-line m-0"
+							className="px-2 pb-2 xs:text-sm sm:text-[1rem] whitespace-pre-line m-0"
 						>
 							{content}
 						</Typography>
@@ -62,11 +62,13 @@ function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 				</Box>
 				{postImgUrl && (
 					<Box className="w-full flex items-center justify-center">
-						<img
-							src={postImgUrl}
-							alt={postId.toString()}
-							className="rounded-2xl max-w-full max-h-[100vh]"
-						/>
+						<a href={postImgUrl} target="_blank">
+							<img
+								src={postImgUrl}
+								alt={postId.toString()}
+								className="rounded-2xl max-w-full max-h-[100vh]"
+							/>
+						</a>
 					</Box>
 				)}
 			</Box>

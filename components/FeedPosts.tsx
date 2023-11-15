@@ -3,7 +3,7 @@ import { Stack } from "@mui/material";
 function FeedPosts({ posts }: { posts: Array<Post> }) {
 	if (posts.length) {
 		return (
-			<Stack spacing={4}>
+			<Stack spacing={2} className="">
 				{posts.map((post) => (
 					<Post key={post.postId} {...post} />
 				))}

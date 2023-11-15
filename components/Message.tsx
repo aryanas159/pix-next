@@ -9,18 +9,30 @@ function Message({ message, isSender, imageUrl }: MessageProps) {
 		<Box className={` flex flex-col items-${isSender ? "end" : "start"}`}>
 			{imageUrl ? (
 				<div className={` flex flex-col items-${isSender ? "end" : "start"}`}>
-					<div className={`flex p-1 items-center bg-primary rounded-s-2xl ${isSender ? "rounded-tr-2xl": "rounded-tl-2xl"}`}>
-						<img src={imageUrl} alt="image" className="w-[300px] rounded-2xl" />
-					</div>
 					<div
-						className={`relative flex flex-col py-1 ${
-							isSender
-								? "bg-primary text-black items-end rounded-bl-2xl pl-8 pr-2"
-								: "bg-black text-white items-start rounded-r-2xl rounded-tl-2xl pr-8 pl-2"
+						className={`flex p-1 items-center bg-primary rounded-s-2xl ${
+							isSender ? "rounded-tr-2xl" : "rounded-tl-2xl"
 						}`}
 					>
-						<Typography>{message}</Typography>
+						<a href={imageUrl} target="_blank">
+							<img
+								src={imageUrl}
+								alt="image"
+								className="w-[300px] rounded-2xl"
+							/>
+						</a>
 					</div>
+					{message && (
+						<div
+							className={`relative flex flex-col py-1 ${
+								isSender
+									? "bg-primary text-black items-end rounded-bl-2xl pl-8 pr-2"
+									: "bg-black text-white items-start rounded-r-2xl rounded-tl-2xl pr-8 pl-2"
+							}`}
+						>
+							<Typography>{message}</Typography>
+						</div>
+					)}
 				</div>
 			) : (
 				<div

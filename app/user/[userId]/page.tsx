@@ -4,6 +4,7 @@ import UserInfo from "@/components/UserInfo";
 import FeedPosts from "@/components/FeedPosts";
 import AllUsers from "@/components/AllUsers";
 import { Container } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import {
 	getUserPosts,
 	getFollowers,
@@ -24,6 +25,7 @@ export default function UserPage({ params: { userId } }: Props) {
 	const [user, setUser] = useState<User | null>();
 	const [followers, setFollowers] = useState<Array<User>>([]);
 	const [following, setFollowing] = useState<Array<User>>([]);
+	const isMobile = useMediaQuery("(max-width:800px)");
 	useEffect(() => {
 		TimeAgo.addDefaultLocale(en);
 		TimeAgo.addLocale(ru);
@@ -43,7 +45,7 @@ export default function UserPage({ params: { userId } }: Props) {
 	return (
 		<Container
 			maxWidth="xl"
-			className="flex px-12 gap-2 items-start pt-8 bg-[#ededed] min-h-[100vh]"
+			className="flex xs:flex-col sm:flex-row sm:px-64 gap-8 xs:items-center sm:items-start pt-8 bg-bg-dark min-h-[100vh]"
 		>
 			<UserInfo
 				user={
@@ -64,7 +66,7 @@ export default function UserPage({ params: { userId } }: Props) {
 				followers={followers}
 				following={following}
 			/>
-			<Container className="flex flex-col gap-4 items-center">
+			<Container className="flex flex-col gap-4 p-0">
 				<FeedPosts posts={posts} />
 			</Container>
 		</Container>
