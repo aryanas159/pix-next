@@ -8,10 +8,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { TextField, Box, Button, CircularProgress } from "@mui/material";
 import UserAvatar from "@/components/UserAvatar";
+import { Skeleton } from "@mui/material";
 function CreatePost({
 	setPosts,
 }: {
-	setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
+	setPosts: React.Dispatch<React.SetStateAction<Post[] | null>>;
 }) {
 	const { data: session } = useSession();
 	const [postContent, setPostContent] = useState("");
@@ -54,7 +55,10 @@ function CreatePost({
 			);
 			toast.success("Post created successfully");
 			setPosts((prev) => {
-				return [res.data.post, ...prev];
+				if (prev) {
+					return [res.data.post, ...prev];
+				}
+				return null;
 			});
 			setImage(null);
 			setImageUrl(null);
@@ -67,7 +71,7 @@ function CreatePost({
 			toast.error("Something went wrong");
 		}
 	};
-	return (
+	return session?.user ? (
 		<Box className="flex flex-col xs:p-3 sm:p-6 w-full rounded-2xl gap-4 bg-bg-light shadow-sm">
 			<Box className="flex flex-row items-center justify-center gap-4">
 				<UserAvatar
@@ -132,6 +136,33 @@ function CreatePost({
 				</Box>
 			)}
 		</Box>
+	) : (
+		<div className="flex flex-col xs:p-3 sm:p-6 w-full rounded-2xl gap-6 bg-bg-light shadow-sm">
+			<div className="flex gap-4 items-center">
+				<Skeleton
+					animation="wave"
+					variant="circular"
+					className="w-[44px] h-[44px]"
+				/>
+				<Skeleton
+					animation="wave"
+					variant="rectangular"
+					className="w-full rounded-full h-[44px]"
+				/>
+			</div>
+			<div className="flex justify-between">
+				<Skeleton
+					animation="wave"
+					variant="rectangular"
+					className="w-[100px] h-[36px] rounded-2xl"
+				/>
+				<Skeleton
+					animation="wave"
+					variant="rectangular"
+					className="w-[100px] h-[36px] rounded-2xl"
+				/>
+			</div>
+		</div>
 	);
 }
 

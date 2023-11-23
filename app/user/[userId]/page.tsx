@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import UserInfo from "@/components/UserInfo";
 import FeedPosts from "@/components/FeedPosts";
 import AllUsers from "@/components/AllUsers";
-import { Container } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import {
 	getUserPosts,
@@ -21,7 +21,7 @@ type Props = {
 };
 
 export default function UserPage({ params: { userId } }: Props) {
-	const [posts, setPosts] = useState<Array<Post>>([]);
+	const [posts, setPosts] = useState<Array<Post> | null>(null);
 	const [user, setUser] = useState<User | null>();
 	const [followers, setFollowers] = useState<Array<User>>([]);
 	const [following, setFollowing] = useState<Array<User>>([]);
@@ -43,9 +43,8 @@ export default function UserPage({ params: { userId } }: Props) {
 			.catch((err) => console.log(err));
 	}, []);
 	return (
-		<Container
-			maxWidth="xl"
-			className="flex xs:flex-col sm:flex-row sm:px-64 gap-8 xs:items-center sm:items-start pt-8 bg-bg-dark min-h-[100vh]"
+		<Box
+			className="mx-4 flex xs:flex-col sm:flex-row sm:px-64 gap-8 xs:items-center sm:items-start pt-8 bg-bg-dark min-h-[100vh] mb-8"
 		>
 			<UserInfo
 				user={
@@ -69,6 +68,6 @@ export default function UserPage({ params: { userId } }: Props) {
 			<Container className="flex flex-col gap-4 p-0">
 				<FeedPosts posts={posts} />
 			</Container>
-		</Container>
+		</Box>
 	);
 }

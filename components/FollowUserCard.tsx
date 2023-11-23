@@ -7,8 +7,10 @@ import { setFollowing } from "@/lib/redux/slices/user/userSlice";
 import { getFollowings } from "@/lib/getFunctions";
 import type { RootState } from "@/lib/redux/store";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 	const dispatch = useDispatch();
+	const router = useRouter();
 	const { data: session } = useSession();
 	const following = useSelector((state: RootState) => state.user.following);
 	const followers = useSelector((state: RootState) => state.user.followers);
@@ -22,17 +24,22 @@ const FollowUserCard = ({ userId, fullName, email, imageUrl }: User) => {
 		}
 	};
 	return (
-		<Box className="flex p-2 gap-2 items-center">
+		<Box className="flex p-2 gap-2 items-center max-w-[90vw]">
 			<UserAvatar
 				userId={userId as number}
 				userName={fullName}
 				imageUrl={imageUrl}
 			/>
-			<Box className="flex flex-col grow pr-2 justify-center">
-				<Typography className="text-dark/80 text-sm font-semibold font-Poppins">
+			<Box
+				className="flex flex-col grow pr-2 justify-center cursor-pointer"
+				onClick={() => router.push(`/user/${userId}`)}
+			>
+				<Typography className="text-dark/80 xs:text-xs sm:text-sm font-semibold font-Poppins">
 					{fullName}
 				</Typography>
-				<Typography className="text-xs text-primary-text">{email}</Typography>
+				<Typography className="xs:text-[0.6rem] text-ellipsis sm:text-xs text-primary-text">
+					{email}
+				</Typography>
 				{followers.find((user) => user.userId === userId) && (
 					<Typography className="text-[0.65rem] text-green font-semibold">
 						Follows you

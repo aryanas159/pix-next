@@ -68,13 +68,13 @@ export default function Navbar() {
 									setIsFocused(false);
 								}, 300);
 							}}
-							className="text-white xs:w-30 sm:w-60 transition-all"
+							className="text-white xs:text-sm xs:w-30 sm:w-60 transition-all"
 						/>
 						{search && isFocused && <SearchResults name={search} />}
 					</div>
 					<Link href="/chat" className="flex items-center xs:hidden sm:block">
 						<Image
-							src="assets/chat.svg"
+							src="/assets/chat.svg"
 							alt="PIX Chat"
 							width={30}
 							height={30}
