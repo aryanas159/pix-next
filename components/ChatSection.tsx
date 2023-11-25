@@ -36,6 +36,8 @@ export default function ChatSection() {
 		if (session?.user) {
 			socket.emit("socket-connection", session.user);
 		}
+	}, [session]);
+	useEffect(() => {
 		const onConnect = () => {
 			console.log("connected");
 			setIsConnected(true);
@@ -49,6 +51,7 @@ export default function ChatSection() {
 		}: {
 			onlineUsers: Array<SocketSession>;
 		}) => {
+			console.log("received online users");
 			setOnlineUsers(onlineUsers);
 		};
 		const onMessage = (message: string) => {
@@ -253,7 +256,6 @@ export default function ChatSection() {
 							</Box>
 						) : (
 							<SendIcon
-								
 								className="text-primary cursor-pointer"
 								onClick={handleMessageSend}
 							/>

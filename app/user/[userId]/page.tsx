@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import UserInfo from "@/components/UserInfo";
 import FeedPosts from "@/components/FeedPosts";
-import AllUsers from "@/components/AllUsers";
 import { Container, Box } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import {
@@ -11,6 +10,8 @@ import {
 	getFollowings,
 	getUser,
 } from "@/lib/getFunctions";
+import { useDispatch } from "react-redux";
+import { setFollowers, setFollowing } from "@/lib/redux/slices/user/userSlice";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
@@ -23,9 +24,9 @@ type Props = {
 export default function UserPage({ params: { userId } }: Props) {
 	const [posts, setPosts] = useState<Array<Post> | null>(null);
 	const [user, setUser] = useState<User | null>();
-	const [followers, setFollowers] = useState<Array<User>>([]);
-	const [following, setFollowing] = useState<Array<User>>([]);
-	const isMobile = useMediaQuery("(max-width:800px)");
+	const [theirFollowers, setTheirFollowers] = useState<Array<User>>([]);
+	const [theirFollowing, setTheirFollowing] = useState<Array<User>>([]);
+	const dispatch = useDispatch();
 	useEffect(() => {
 		TimeAgo.addDefaultLocale(en);
 		TimeAgo.addLocale(ru);
@@ -36,16 +37,20 @@ export default function UserPage({ params: { userId } }: Props) {
 			.then((res) => setPosts(res))
 			.catch((err) => console.log(err));
 		getFollowers(userId)
-			.then((res) => setFollowers(res))
+			.then((res) => setTheirFollowers(res))
 			.catch((err) => console.log(err));
 		getFollowings(userId)
-			.then((res) => setFollowing(res))
+			.then((res) => setTheirFollowing(res))
+			.catch((err) => console.log(err));
+		getFollowers()
+			.then((res) => dispatch(setFollowers({ followers: res })))
+			.catch((err) => console.log(err));
+		getFollowings()
+			.then((res) => dispatch(setFollowing({ following: res })))
 			.catch((err) => console.log(err));
 	}, []);
 	return (
-		<Box
-			className="mx-4 flex xs:flex-col sm:flex-row sm:px-64 gap-8 xs:items-center sm:items-start pt-8 bg-bg-dark min-h-[100vh] mb-8"
-		>
+		<Box className="mx-4 flex xs:flex-col sm:flex-row sm:px-64 gap-8 xs:items-center sm:items-start pt-8 bg-bg-dark min-h-[100vh] mb-8">
 			<UserInfo
 				user={
 					user
@@ -62,8 +67,8 @@ export default function UserPage({ params: { userId } }: Props) {
 								email: "",
 						  }
 				}
-				followers={followers}
-				following={following}
+				followers={theirFollowers}
+				following={theirFollowing}
 			/>
 			<Container className="flex flex-col gap-4 p-0">
 				<FeedPosts posts={posts} />

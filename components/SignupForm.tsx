@@ -305,6 +305,18 @@ const SignupForm = () => {
 					value={otp}
 					onChange={(e) => setOtp(e.target.value)}
 					type="number"
+					InputLabelProps={{
+						sx: {
+							color: "#000",
+							fontSize: { xs: "0.8rem", sm: "0.9rem" },
+						},
+					}}
+					inputProps={{
+						sx: {
+							color: "#000",
+							padding: { xs: "0.8rem", sm: "1rem" },
+						},
+					}}
 				/>
 			)}
 			<Button type="submit" variant="contained" disabled={loading}>

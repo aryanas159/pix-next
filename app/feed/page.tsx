@@ -36,7 +36,6 @@ function Feed() {
 		getFollowings()
 			.then((res) => dispatch(setFollowing({ following: res })))
 			.catch((err) => console.log(err));
-		console.log("exec");
 	}, []);
 	return (
 		// session?.user ? (
