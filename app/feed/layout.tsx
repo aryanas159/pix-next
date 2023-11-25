@@ -10,6 +10,7 @@ import { getServerSession } from "next-auth";
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
 	const session = await getServerSession();
+	console.log({session})
 	if (!session) {
 		return redirect("/login");
 	}

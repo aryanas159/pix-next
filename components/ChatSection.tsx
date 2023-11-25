@@ -87,7 +87,7 @@ export default function ChatSection() {
 	useEffect(() => {
 		const timeOut = setTimeout(() => {
 			setIsTyping(false);
-		}, 8000);
+		}, 4000);
 		return () => clearTimeout(timeOut);
 	}, [isTyping]);
 	useEffect(() => {
