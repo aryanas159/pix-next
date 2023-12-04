@@ -95,7 +95,7 @@ export default function Navbar() {
 					)}
 					{!isMobile &&
 						(session ? (
-							<Button color="inherit" onClick={() => signOut()}>
+							<Button color="inherit" onClick={() => signOut({callbackUrl: "/login"})}>
 								Logout
 							</Button>
 						) : (

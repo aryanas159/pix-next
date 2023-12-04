@@ -7,9 +7,4 @@ export default async function Home() {
 		return redirect("/login");
 	}
 	return redirect("/feed");
-	return (
-		<>
-			<main>PIX</main>
-		</>
-	);
 }

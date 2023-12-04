@@ -53,7 +53,7 @@ function MobileMenu() {
 					Discover
 				</div>
 			</Link>
-			<div className={linkClasses} onClick={() => signOut()}>
+			<div className={linkClasses} onClick={() => signOut({callbackUrl: "/login"})}>
 			<div className="flex items-center gap-2">
 					<Image 
 						src="/assets/logout.svg"
