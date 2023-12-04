@@ -86,7 +86,12 @@ function CreatePost({
 					fullWidth
 					value={postContent}
 					onChange={(e) => {
-						setPostContent(e.target.value);
+						if (e.target.value.length <= 1000) {
+							setPostContent(e.target.value);
+						}
+						else {
+							setPostContent(e.target.value.slice(0, 1000));
+						}
 					}}
 					sx={{
 						"& .MuiInputBase-root": {
@@ -111,7 +116,10 @@ function CreatePost({
 					onClick={handlePost}
 				>
 					{loading && (
-						<CircularProgress size={16} className="xs:mr-1 sm:mr-2 text-black" />
+						<CircularProgress
+							size={16}
+							className="xs:mr-1 sm:mr-2 text-black"
+						/>
 					)}
 					Post
 				</Button>
