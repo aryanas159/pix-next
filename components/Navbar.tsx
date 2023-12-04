@@ -105,7 +105,7 @@ export default function Navbar() {
 						))}
 				</Box>
 				{isMobile && isMenuOpen && (
-					<div className="flex flex-col p-4 gap-2 absolute bg-bg top-[56px] right-0">
+					<div className="flex flex-col p-4 rounded-md gap-2 absolute bg-bg top-[56px] right-0">
 						<MobileMenu />
 					</div>
 				)}

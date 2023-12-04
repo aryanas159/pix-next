@@ -37,7 +37,7 @@ function PostImageUploadDropzone({
 			) : !image ? (
 				<></>
 			) : (
-				<Typography className="text-sm truncate max-w-[200px]">
+				<Typography className="text-sm truncate xs:max-w-[130px] sm:max-w-[200px]">
 					{image.name}
 				</Typography>
 			)}

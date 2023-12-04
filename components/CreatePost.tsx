@@ -107,11 +107,11 @@ function CreatePost({
 				<PostImageUploadDropzone image={image} setImage={setImage} />
 				<Button
 					variant="contained"
-					className="rounded-2xl bg-primary text-black"
+					className="rounded-2xl bg-primary text-black xs:px-2 xs:py-[6px] sm:px-4 sm:py-[8px] "
 					onClick={handlePost}
 				>
 					{loading && (
-						<CircularProgress size={18} className="mr-4 text-black" />
+						<CircularProgress size={16} className="xs:mr-1 sm:mr-2 text-black" />
 					)}
 					Post
 				</Button>

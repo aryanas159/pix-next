@@ -23,6 +23,19 @@ function Post({ postId, userId, postImgUrl, content, timeStamps }: Post) {
 	}, []);
 	const handleLike = async () => {
 		try {
+			if (likes.find((like) => like.userId === session?.user?.id)) {
+				const newLikes = likes.filter(
+					(like) => like.userId !== session?.user?.id
+				);
+				setLikes(newLikes);
+			} else {
+				const newLike: Like = {
+					postId,
+					userId: session?.user?.id as number,
+				};
+				const newLikes = [...likes, newLike];
+				setLikes(newLikes);
+			}
 			const res = await axios.post(
 				`${process.env.NEXT_PUBLIC_API_URL}/posts/${postId}/like`
 			);

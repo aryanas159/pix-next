@@ -1,6 +1,6 @@
 "use client";
 import CreatePost from "@/components/CreatePost";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import FeedPosts from "@/components/FeedPosts";
 import UserInfo from "@/components/UserInfo";
@@ -16,6 +16,7 @@ import ru from "javascript-time-ago/locale/ru.json";
 import ChatSection from "@/components/ChatSection";
 import { Toaster } from "react-hot-toast";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import AllUsers from "@/components/AllUsers";
 function Feed() {
 	const dispatch = useDispatch();
 	const [posts, setPosts] = useState<Array<Post> | null>(null);
@@ -42,16 +43,19 @@ function Feed() {
 		<Box className="flex xs:px-4 sm:px-8 gap-8 items-start pt-8 bg-bg min-h-screen">
 			<Toaster />
 			{!isMobile && (
-				<UserInfo
-					user={{
-						userId: session?.user?.id,
-						fullName: session?.user?.name,
-						imageUrl: session?.user?.image,
-						email: session?.user?.email,
-					}}
-					followers={followers}
-					following={following}
-				/>
+				<div className="flex flex-col gap-4">
+					<UserInfo
+						user={{
+							userId: session?.user?.id,
+							fullName: session?.user?.name,
+							imageUrl: session?.user?.image,
+							email: session?.user?.email,
+						}}
+						followers={followers}
+						following={following}
+					/>
+					<AllUsers/>
+				</div>
 			)}
 			<Box className="flex flex-col gap-4 items-center flex-[2]">
 				<CreatePost setPosts={setPosts} />
