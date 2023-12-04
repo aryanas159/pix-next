@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 function MobileMenu() {
-	const linkClasses = "p-2 text-white no-underline h-[30px] text-sm";
+	const linkClasses = "p-2 text-white no-underline h-[36px] text-sm";
 	const { data: session } = useSession();
 	return (
 		<>
