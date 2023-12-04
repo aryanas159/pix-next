@@ -12,7 +12,7 @@ function MobileMenu() {
 			<Link href="/feed" className={linkClasses}>
 				<div className="flex items-center gap-2">
 					<Image 
-						src="assets/home.svg"
+						src="/assets/home.svg"
 						alt="Home"
 						width={16}
 						height={16}
@@ -24,7 +24,7 @@ function MobileMenu() {
 				<Link href={`/user/${session.user.id}`} className={linkClasses}>
 					<div className="flex items-center gap-2">
 					<Image 
-						src="assets/user.svg"
+						src="/assets/user.svg"
 						alt="profile"
 						width={16}
 						height={16}
@@ -36,7 +36,7 @@ function MobileMenu() {
 			<Link href="/chat" className={linkClasses + " relative"}>
 			<div className="absolute left-1 flex items-center gap-[6px]">
 					<img 
-						src="assets/chat.svg"
+						src="/assets/chat.svg"
 						alt="chat"
 						width={24}
 					/>
@@ -46,7 +46,7 @@ function MobileMenu() {
 			<Link href="/discover" className={linkClasses + " relative"}>
 			<div className="absolute left-1 flex items-center gap-[8px]">
 					<img 
-						src="assets/discovery.svg"
+						src="/assets/discovery.svg"
 						alt="discover"
 						width={20}
 					/>
@@ -56,7 +56,7 @@ function MobileMenu() {
 			<div className={linkClasses} onClick={() => signOut()}>
 			<div className="flex items-center gap-2">
 					<Image 
-						src="assets/logout.svg"
+						src="/assets/logout.svg"
 						alt="logout"
 						width={16}
 						height={16}
