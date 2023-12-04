@@ -1,11 +1,18 @@
 "use client";
-import React, { useState } from "react";
-import { Container, Grid } from "@mui/material";
-import { signIn } from "next-auth/react";
+import React, { useState, useEffect } from "react";
+import { Grid } from "@mui/material";
 import LoginForm from "@/components/LoginForm";
 import LoginGreeting from "@/components/LoginGreeting";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { useSearchParams } from "next/navigation";
 export default function Login() {
+	const searchParams = useSearchParams();
+	useEffect(() => {
+		const err = searchParams.get("error");
+		if (err) {
+			toast.error("Please check your credentials");
+		}
+	}, []);
 	return (
 		<main
 			className="w-screen h-screen flex items-center justify-center transition-all overflow-auto"

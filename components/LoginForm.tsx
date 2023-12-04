@@ -42,20 +42,19 @@ export default function LoginForm() {
 			const signInResponse = await signIn("credentials", {
 				email: values.email,
 				password: values.password,
-				redirect: false,
 				callbackUrl: "/feed",
 			});
-			if (!signInResponse?.ok) {
-				toast.dismiss();
-				toast.error("Please check your credentials");
-				console.log(signInResponse?.error);
-				setLoading(false);
-				return;
-			}
+			// if (!signInResponse?.ok) {
+			// 	toast.dismiss();
+			// 	toast.error("Please check your credentials");
+			// 	console.log(signInResponse?.error);
+			// 	setLoading(false);
+			// 	return;
+			// }
 			toast.dismiss();
-			toast.success("Logged in successfully");
+			console.log(signInResponse)
+			// toast.success("Logged in successfully");
 			setLoading(false);
-			router.push("/feed");
 		} catch (error) {
 			console.log(error);
 			setLoading(false);
