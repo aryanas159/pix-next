@@ -4,6 +4,7 @@ export async function GET(request: Request) {
 	try {
 		const { searchParams } = new URL(request.url);
 		const name = searchParams.get("name");
+        
 		if (name) {
 			const res = await prisma.$queryRaw`
             SELECT *
@@ -25,6 +26,13 @@ export async function GET(request: Request) {
         `;
 			return NextResponse.json({ result: res }, { status: 200 });
 		}
+        else {
+            const res = await prisma.$queryRaw`
+            SELECT * FROM users
+            ORDER BY fullName, email
+            `;
+            return NextResponse.json({ result: res }, { status: 200 });
+        }
 		return NextResponse.json({ result: [] }, { status: 200 });
 	} catch (error) {
 		console.log(error);
