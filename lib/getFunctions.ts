@@ -102,8 +102,8 @@ export async function getFollowings(
 export async function getAllUsers(): Promise<Array<User>> {
 	try {
 		const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/`);
-		if (res?.data?.users) {
-			return res.data.users as Array<User>;
+		if (res?.data?.result) {
+			return res.data.result as Array<User>;
 		}
 		return [];
 	} catch (error) {
