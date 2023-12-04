@@ -10,6 +10,7 @@ function AllUsers() {
 	const { data: session } = useSession();
 	useEffect(() => {
 		getAllUsers().then((res) => {
+			console.log(res)
 			const users = res.filter((user) => user.userId !== session?.user?.id);
 			setUsers(users);
 		});
