@@ -34,9 +34,12 @@ export async function POST(request: Request) {
             INSERT INTO users (fullName, email, password, imageUrl, type)
             VALUES (${requestBody.fullName}, ${requestBody.email}, ${hashedPwd}, ${requestBody.imageUrl}, ${requestBody.type})
     `;
-
+		const user: Array<User> = await prisma.$queryRaw`
+			SELECT * FROM users WHERE email = ${requestBody.email}
+	`;
 		return NextResponse.json({
 			message: "User successfully created",
+			user: user[0],
 			success: true,
 		});
 	} catch (err: any) {

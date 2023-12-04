@@ -67,14 +67,13 @@ export const authOptions: NextAuthOptions = {
 				return true;
 			}
 			if (account?.provider == "google") {
-				
 				const userEmail = profile?.email;
 				const res = await axios.get(
 					`${process.env.NEXT_PUBLIC_API_URL}/user/fromEmail/${userEmail}`
 				);
-				
+
 				const { user: myUser } = res.data;
-				
+
 				if (myUser) {
 					if (myUser?.type == "GOOGLE") {
 						user.id = myUser?.userId;
@@ -95,7 +94,11 @@ export const authOptions: NextAuthOptions = {
 						`${process.env.NEXT_PUBLIC_API_URL}/user/signup`,
 						formData
 					);
-					return true;
+					if (res?.data?.user) {
+						user.id = res.data.user.userId;
+						return true;
+					}
+					return false;
 				} catch (error) {
 					console.log(error);
 					return false;
@@ -104,19 +107,23 @@ export const authOptions: NextAuthOptions = {
 			return false;
 		},
 		async jwt({ token, user }): Promise<JWT> {
-
 			if (user) {
 				token.user = user;
 			}
 			return token;
 		},
-		async session({ session, token }: {session: Session, token: JWT}): Promise<Session> {
+		async session({
+			session,
+			token,
+		}: {
+			session: Session;
+			token: JWT;
+		}): Promise<Session> {
 			const { user } = token;
 			if (user) {
 				session.user = user;
 			}
 			return session;
 		},
-		
 	},
 };
