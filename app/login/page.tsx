@@ -4,7 +4,7 @@ import { Grid } from "@mui/material";
 import LoginForm from "@/components/LoginForm";
 import LoginGreeting from "@/components/LoginGreeting";
 import toast, { Toaster } from "react-hot-toast";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, redirect } from "next/navigation";
 export default function Login() {
 	const searchParams = useSearchParams();
 	useEffect(() => {
@@ -13,6 +13,7 @@ export default function Login() {
 			toast.error("Please check your credentials");
 		}
 	}, []);
+	return redirect("/");
 	return (
 		<main
 			className="w-screen h-screen flex items-center justify-center transition-all overflow-auto"

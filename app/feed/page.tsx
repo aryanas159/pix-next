@@ -17,6 +17,7 @@ import ChatSection from "@/components/ChatSection";
 import { Toaster } from "react-hot-toast";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AllUsers from "@/components/AllUsers";
+import {redirect} from "next/navigation";
 function Feed() {
 	const dispatch = useDispatch();
 	const [posts, setPosts] = useState<Array<Post> | null>(null);
@@ -38,6 +39,7 @@ function Feed() {
 			.then((res) => dispatch(setFollowing({ following: res })))
 			.catch((err) => console.log(err));
 	}, []);
+	return redirect("/");
 	return (
 		// session?.user ? (
 		<Box className="flex xs:px-4 sm:px-8 gap-8 items-start pt-8 bg-bg min-h-screen">
