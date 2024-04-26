@@ -1,0 +1,20 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - db_data:/var/lib/mysql
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/docker
+    environment:
+      - DATABASE_URL=mysql://root:root@db:3306/pixDB
+    depends_on:
+      - db
+volumes:
+  db_data:

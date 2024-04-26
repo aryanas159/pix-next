@@ -233,12 +233,12 @@ const SignupForm = () => {
 				label="Full Name"
 				value={formik.values.fullName}
 				onChange={formik.handleChange}
-				onBlur={formik.handleBlur}
-				error={
-					(formik.touched.fullName as boolean) &&
-					(Boolean(formik.errors.fullName) as boolean)
-				}
-				helperText={formik.touched.fullName && formik.errors.fullName}
+					onBlur={formik.handleBlur}
+					error={
+						(formik.touched.fullName as boolean) &&
+						(Boolean(formik.errors.fullName) as boolean)
+					}
+					helperText={formik.touched.fullName && formik.errors.fullName}
 			/>
 			<FormTextField
 				id="email"
