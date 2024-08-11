@@ -31,6 +31,7 @@ type Message = {
 	senderId: number;
 	receiverId: number;
 	message: string;
+	image_url?: string;
 	imageUrl?: string;
 };
 
