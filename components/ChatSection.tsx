@@ -205,11 +205,11 @@ export default function ChatSection() {
 							</Typography>
 						)}
 						<>
-							{messages.map(({ senderId, message, imageUrl }) => (
+							{messages.map(({ senderId, message, image_url }) => (
 								<Message
 									message={message}
 									isSender={session?.user.id === senderId}
-									imageUrl={imageUrl}
+									imageUrl={image_url}
 								/>
 							))}
 							{isTyping && <UserTyping />}
