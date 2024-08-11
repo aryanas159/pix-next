@@ -178,11 +178,11 @@ function Chat() {
 				<Box className="flex flex-col p-4 gap-2 bg-bg-light rounded-2xl flex-1 overflow-y-scroll">
 					{selectedUser ? (
 						<>
-							{messages.map(({ senderId, message, imageUrl }) => (
+							{messages.map(({ senderId, message, image_url }) => (
 								<Message
 									message={message}
 									isSender={session?.user.id === senderId}
-									imageUrl={imageUrl}
+									imageUrl={image_url}
 								/>
 							))}
 							{isTyping && <UserTyping />}
