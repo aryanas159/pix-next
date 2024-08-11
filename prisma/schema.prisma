@@ -60,7 +60,7 @@ model messages {
   receiverId Int?
   message    String?   @db.VarChar(200)
   timestamp  DateTime? @default(now()) @db.DateTime(0)
-  image_url  String?   @db.VarChar(255)
+  imageUrl   String?   @db.VarChar(255)
 
   @@index([senderId], map: "fk_constraint")
   @@index([receiverId], map: "fk_constraint_1")
