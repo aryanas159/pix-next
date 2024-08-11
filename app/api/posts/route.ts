@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 			const posts: Array<Post> = await prisma.$queryRaw`
         SELECT * FROM posts
         WHERE userId = ${userId}
-        ORDER BY timeStamps DESC
+        ORDER BY timeStamps DESC, postId desc
     `;
 			return NextResponse.json({ posts }, { status: 200 });
 		} catch (error) {
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 	try {
 		const posts: Array<Post> = await prisma.$queryRaw`
         SELECT * FROM posts
-        ORDER BY timeStamps DESC
+        ORDER BY timeStamps DESC, posts.postId desc
     `;
 		return NextResponse.json({ posts }, { status: 200 });
 	} catch (error) {

@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 		if (senderId && receiverId) {
 			if (imageUrl) {
 				await prisma.$queryRaw`
-            INSERT INTO messages(senderId, receiverId, message, imageUrl)
+            INSERT INTO messages(senderId, receiverId, message, image_url)
             VALUES(${senderId}, ${receiverId}, ${message}, ${imageUrl})
         `;
 			} else {
